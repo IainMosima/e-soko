@@ -4,6 +4,7 @@ const productsSchema = new Schema({
     productName: { type: String, required: true },
     productImgKey: { type: String, required: false },
     categoryName: { type: String, required: true},
+    price: { type: Number, required: true },
     available: { type: Boolean }
 });
 

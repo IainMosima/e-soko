@@ -1,5 +1,6 @@
 import S3 from "aws-sdk/clients/s3";
 import * as fs from 'fs-extra';
+import sharp from "sharp";
 import env from "../utils/validateEnv"
 
 const bucketName = env.AWS_BUCKET_NAME;
@@ -16,11 +17,14 @@ const s3 = new S3({
 
 // upload a file to s3
 export async function uploadFile(file: Express.Multer.File) {
-    const fileStream = fs.createReadStream(file.path);
+    // resizing the image before uploading to s3
+    const productImg = await sharp(file.path)
+        .resize({width: 400, height: 400, fit: 'inside'})
+        .toBuffer();
 
     const uploadParams = {
         Bucket: bucketName,
-        Body: fileStream,
+        Body: productImg,
         Key: file.filename
     }
 
@@ -28,11 +32,20 @@ export async function uploadFile(file: Express.Multer.File) {
 }
 
 // downloading an image from s3
-export async function getFileStream(filekey: string) {
-    const downParams = {
+export async function getImage(filekey: string) {
+    const params = {
         Key: filekey,
         Bucket: bucketName
     }
 
-    return s3.getObject(downParams).createReadStream();
+    return s3.getObject(params).createReadStream();
+}
+
+// deleting an image from s3
+export async function deleteImage(filekey: string) {
+    const params = {
+        Key: filekey,
+        Bucket: bucketName
+    }
+    return s3.deleteObject(params).promise()
 }

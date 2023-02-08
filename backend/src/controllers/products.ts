@@ -4,9 +4,10 @@ import * as s3Api from "../aws/s3";
 import * as fs from 'fs-extra';
 import util from "util";
 import createHttpError from "http-errors";
-
+import mongoose from "mongoose";
 
 const unlinkFile = util.promisify(fs.unlink);
+
 
 // fetch all products available in the db
 export const getProducts: RequestHandler = async (req, res, next) => {
@@ -18,35 +19,44 @@ export const getProducts: RequestHandler = async (req, res, next) => {
     }
 }
 
-interface CreateProduct {
-    productName?: string,
-    productImg?: File,
-    categoryName?: string,
-    available?: string
-}
-
-// getting image from s3Bucket
+// getting productimage from s3Bucket
 export const getImage: RequestHandler = async (req, res, next) => {
     const key = req.params.key;
-    const readStream = await s3Api.getFileStream(key);
-
-    readStream.pipe(res);
+    try {
+        const readStream = await s3Api.getImage(key);
+        readStream.pipe(res);
+    } catch (error) {
+        next(error);
+    }    
 }
 
 // creating a new product
-export const createProduct: RequestHandler<unknown, unknown, CreateProduct, unknown> = async (req, res, next) => {
+interface CreateProductBody {
+    productName?: string,
+    productImg?: File,
+    categoryName?: string,
+    price: number,
+    available?: string
+}
+export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, unknown> = async (req, res, next) => {
     const productName = req.body.productName;
     const categoryName = req.body.categoryName;
     const available = req.body.available;
-
+    const price = req.body.price;
     const productImg = req.file;
 
+    if (!productName) {
+        throw createHttpError(400, 'Product must have a title');
+    }
+
+    let imageKey = '';
+
     try {
-        let imageKey = '';
         if (productImg){
             const result = await s3Api.uploadFile(productImg);
             // deleting an image from the upload dir once uploaded
             await unlinkFile(productImg.path);
+            
             imageKey = result.Key;
         }
 
@@ -55,14 +65,104 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProduct, unkn
             productName: productName,
             productImgKey: imageKey,
             categoryName: categoryName,
+            price: price,
             available: available
         });
 
         res.status(200).json(newProduct);
 
     } catch (error) {
+        // deleting the uploaded productImg from s3 if it exists
+        if (imageKey) {
+            await s3Api.deleteImage(imageKey);
+        }
         next(error);
     }
     
+}
+
+
+// updating a product
+interface UpdateProductParams {
+    productId: string
+}
+
+interface UpdateProductBody {
+    productName?: string,
+    productImg?: File,
+    categoryName?: string,
+    available?: boolean
+}
+
+export const updateProduct: RequestHandler<unknown, unknown, UpdateProductBody, unknown> = async (req, res, next) => {
+    const productId = (req.params as UpdateProductParams).productId;
+    const productName = req.body.productName;
+    const categoryName = req.body.categoryName;
+    const available = req.body.available;
+    const productImg = req.file;
+
+    try {
+        if (!mongoose.isValidObjectId(productId)) {
+            throw createHttpError(400, "Product must have a valid id");
+        }
+        const product = await ProductModel.findById(productId).exec();
+
+        if (!product) {
+            throw createHttpError(404, "Product not found");
+        }
+
+        if (productName) product.productName = productName;
+        if (categoryName) product.categoryName = categoryName;
+        if (available) product.available = available;
+        if (productImg) {
+            // deletinng the image from the s3 bucket
+            if (product.productImgKey) {
+                await s3Api.deleteImage(product.productImgKey);
+            }
+            // uploading the new image to s3
+            let imageKey = '';
+            if (productImg){
+                const result = await s3Api.uploadFile(productImg);
+                // deleting an image from the upload dir once uploaded
+                await unlinkFile(productImg.path);
+                imageKey = result.Key;
+            }
+            product.productImgKey = imageKey;
+        }
+
+        const updatedProduct = await product.save();
+        res.status(200).send({ success: true, message: "Product updated successfully", data: updatedProduct });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// deleting a product from the mongodb and s3Bucket
+export const deleteProduct: RequestHandler = async(req, res, next) => {
+    const productId = req.params.productId;
+
+    try {
+        if (!mongoose.isValidObjectId(productId)) {
+            throw createHttpError(400, "Product must have a valid id");
+        }
+        const product = await ProductModel.findById(productId).exec();
+
+        if(!product) {
+            throw createHttpError(404, "Product not found");
+        }
+
+        // deleting the image from the s3 bucket
+        if (product.productImgKey) {
+            await s3Api.deleteImage(product.productImgKey);
+        }
+
+        // deleting the product details from mongodb
+        await product.remove();
+
+        res.sendStatus(204);
+
+    } catch (error) {
+        next(error);
+    }
 }
 
