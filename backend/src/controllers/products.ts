@@ -35,7 +35,7 @@ interface CreateProductBody {
     productName?: string,
     productImg?: File,
     categoryName?: string,
-    price: number,
+    price?: number,
     available?: string
 }
 export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, unknown> = async (req, res, next) => {
