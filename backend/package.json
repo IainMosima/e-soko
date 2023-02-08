@@ -12,6 +12,7 @@
   "author": "Iain Mosima",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.0",
     "@types/express-session": "^1.17.5",
@@ -30,6 +31,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1310.0",
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "bootstrap": "^5.2.3",
     "connect-mongo": "^4.6.0",
