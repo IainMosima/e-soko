@@ -10,7 +10,7 @@ import { unlinkFile } from "../utils/unlinkFIle";
 const usersBucket = env.AWS_BUCKET_USERS_NAME;
 
 
-// getting an user is logged in
+// checking if a user is logged in
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     const authenticatedUser = req.session.userId;
 
