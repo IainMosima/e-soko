@@ -11,8 +11,31 @@
 				{
 					"name": "Get all products",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"63e3fb144d1547e4dd514e71\",\n    \"packageName\":\"My fucking Package\",\n    \"items\": [{\n        \"_id\":\"63e3fc4c1da7e0415cc2e5b8\",\n        \"quantity\":\"3\"\n    },\n    {\n        \"_id\":\"63e3f6ac3e1014ec4b4536d8\",\n        \"quantity\":\"1\"\n    }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/packages/63e5212a119a917f0f0a1993",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"packages",
+								"63e5212a119a917f0f0a1993"
+							]
+						}
 					},
 					"response": []
 				},
@@ -26,21 +49,32 @@
 							"formdata": [
 								{
 									"key": "productName",
-									"value": "tomatoes",
-									"contentType": "application/json",
-									"type": "text"
+									"value": "Peas",
+									"contentType": "multipart/form-data",
+									"type": "default"
+								},
+								{
+									"key": "productImg",
+									"contentType": "multipart/form-data",
+									"type": "file",
+									"src": "/home/space/Desktop/e-soko-images/peas.png"
 								},
 								{
 									"key": "categoryName",
-									"value": "vegetables",
-									"contentType": "application/json",
-									"type": "text"
+									"value": "Cereals",
+									"contentType": "multipart/form-data",
+									"type": "default"
 								},
 								{
 									"key": "available",
 									"value": "true",
-									"contentType": "application/json",
-									"type": "text"
+									"contentType": "multipart/form-data",
+									"type": "default"
+								},
+								{
+									"key": "price",
+									"value": "150",
+									"type": "default"
 								}
 							],
 							"options": {
@@ -209,6 +243,117 @@
 								"v1",
 								"users",
 								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/users/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"spacecadet\",\n    \"password\": \"outtaspace\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Packages",
+			"item": [
+				{
+					"name": "Get all packages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/packages/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"packages",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a package",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"63e3fb144d1547e4dd514e71\",\n    \"packageName\":\"My Comrade Package\",\n    \"items\": [{\n        \"_id\":\"63e361d6c4511339d97f02d6\",\n        \"quantity\":\"2\"\n    },\n    {\n        \"_id\":\"63e3f6ac3e1014ec4b4536d8\",\n        \"quantity\":\"1\"\n    }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/packages/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"packages",
+								""
 							]
 						}
 					},
