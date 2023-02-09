@@ -1,9 +1,7 @@
 import S3 from "aws-sdk/clients/s3";
-import * as fs from 'fs-extra';
 import sharp from "sharp";
 import env from "../utils/validateEnv"
 
-const bucketName = env.AWS_BUCKET_NAME;
 const region = env.AWS_REGION;
 const accessKeyId = env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = env.AWS_SECRET_KEY;
@@ -16,7 +14,7 @@ const s3 = new S3({
 
 
 // upload a file to s3
-export async function uploadFile(file: Express.Multer.File) {
+export async function uploadFile(file: Express.Multer.File, bucketName: string) {
     // resizing the image before uploading to s3
     const productImg = await sharp(file.path)
         .resize({width: 400, height: 400, fit: 'inside'})
@@ -32,7 +30,7 @@ export async function uploadFile(file: Express.Multer.File) {
 }
 
 // downloading an image from s3
-export async function getImage(filekey: string) {
+export async function getImage(filekey: string, bucketName: string){
     const params = {
         Key: filekey,
         Bucket: bucketName
@@ -42,7 +40,7 @@ export async function getImage(filekey: string) {
 }
 
 // deleting an image from s3
-export async function deleteImage(filekey: string) {
+export async function deleteImage(filekey: string, bucketName: string) {
     const params = {
         Key: filekey,
         Bucket: bucketName

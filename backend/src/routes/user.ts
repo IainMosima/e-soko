@@ -12,5 +12,11 @@ router.get('/', requireAuth, UsersController.getAuthenticatedUser);
 // creating a new user
 router.post('/signup', upload.single('profileImg'), UsersController.signup);
 
+// logging out a user
+router.post('/logout', UsersController.logout);
+
+// logging in a user
+router.post('/login', UsersController.login);
+
 
 export default router;

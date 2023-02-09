@@ -1,13 +1,13 @@
 import { RequestHandler } from "express";
 import ProductModel from "../models/product";
 import * as s3Api from "../aws/s3";
-import * as fs from 'fs-extra';
-import util from "util";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
+import env from "../utils/validateEnv";
+import { unlinkFile } from "../utils/unlinkFIle";
 
-const unlinkFile = util.promisify(fs.unlink);
 
+const productsBucket = env.AWS_BUCKET_PRODUCTS_NAME
 
 // fetch all products available in the db
 export const getProducts: RequestHandler = async (req, res, next) => {
@@ -19,11 +19,11 @@ export const getProducts: RequestHandler = async (req, res, next) => {
     }
 }
 
-// getting productimage from s3Bucket
+// fetching productimage from s3Bucket
 export const getImage: RequestHandler = async (req, res, next) => {
     const key = req.params.key;
     try {
-        const readStream = await s3Api.getImage(key);
+        const readStream = await s3Api.getImage(key, productsBucket);
         readStream.pipe(res);
     } catch (error) {
         next(error);
@@ -49,21 +49,21 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
         throw createHttpError(400, 'Product must have a title');
     }
 
-    let imageKey = '';
+    let productImgKey = '';
 
     try {
         if (productImg){
-            const result = await s3Api.uploadFile(productImg);
+            const result = await s3Api.uploadFile(productImg, productsBucket);
             // deleting an image from the upload dir once uploaded
             await unlinkFile(productImg.path);
             
-            imageKey = result.Key;
+            productImgKey = result.Key;
         }
 
         // uploading the other records to mongodb
         const newProduct = await ProductModel.create({
             productName: productName,
-            productImgKey: imageKey,
+            productImgKey: productImgKey,
             categoryName: categoryName,
             price: price,
             available: available
@@ -73,8 +73,8 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
 
     } catch (error) {
         // deleting the uploaded productImg from s3 if it exists
-        if (imageKey) {
-            await s3Api.deleteImage(imageKey);
+        if (productImgKey) {
+            await s3Api.deleteImage(productImgKey, productsBucket);
         }
         next(error);
     }
@@ -117,12 +117,12 @@ export const updateProduct: RequestHandler<unknown, unknown, UpdateProductBody, 
         if (productImg) {
             // deletinng the image from the s3 bucket
             if (product.productImgKey) {
-                await s3Api.deleteImage(product.productImgKey);
+                await s3Api.deleteImage(product.productImgKey, productsBucket);
             }
             // uploading the new image to s3
             let imageKey = '';
             if (productImg){
-                const result = await s3Api.uploadFile(productImg);
+                const result = await s3Api.uploadFile(productImg, productsBucket);
                 // deleting an image from the upload dir once uploaded
                 await unlinkFile(productImg.path);
                 imageKey = result.Key;
@@ -153,7 +153,7 @@ export const deleteProduct: RequestHandler = async(req, res, next) => {
 
         // deleting the image from the s3 bucket
         if (product.productImgKey) {
-            await s3Api.deleteImage(product.productImgKey);
+            await s3Api.deleteImage(product.productImgKey, productsBucket);
         }
 
         // deleting the product details from mongodb

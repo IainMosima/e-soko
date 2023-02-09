@@ -8,7 +8,7 @@ import userRoutes from "./routes/user";
 import MongooseStore from "connect-mongo";
 import session from "express-session";
 import env from "./utils/validateEnv";
-import { requireAuth } from "./middleware/requireAuth";
+// import { requireAuth } from "./middleware/requireAuth";
 
 
 
@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
     secret: env.SESSION_SECRETY_KEY,
     resave: false,
+    saveUninitialized: false,
     cookie: { maxAge: 60 * 60 * 1500 },
     rolling: true,
     store: MongooseStore.create({ mongoUrl: env.MONGO_CONNECTION_STRING })
