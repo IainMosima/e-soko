@@ -18,5 +18,8 @@ router.post('/logout', UsersController.logout);
 // logging in a user
 router.post('/login', UsersController.login);
 
+// getting a users profile photo
+router.get('/:key', UsersController.getProfileImage);
+
 
 export default router;

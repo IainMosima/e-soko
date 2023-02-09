@@ -33,7 +33,7 @@ export const getProfileImage: RequestHandler = async (req, res, next) => {
     }
 }
 
-// function to sign up a new user
+//  signing up a new user
 interface SignupBody {
     username?: string,
     email?: string,
@@ -74,7 +74,7 @@ export const signup: RequestHandler<unknown, unknown, SignupBody, unknown> = asy
         let profileImgKey = '';
 
         try{
-            // uploading user profile to s3 user bucket
+            // uploading user profile picture to s3 user bucket
             if (profileImg) {
                 const result = await s3APi.uploadFile(profileImg, usersBucket);
                 await unlinkFile(profileImg.path);
@@ -92,7 +92,7 @@ export const signup: RequestHandler<unknown, unknown, SignupBody, unknown> = asy
                 profileImgKey: profileImgKey
             });
 
-            // appending user if to session
+            // creating a session
             req.session.userId = newUser._id;
 
             res.status(201).json(newUser);

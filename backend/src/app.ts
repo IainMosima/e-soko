@@ -3,8 +3,9 @@ import express, { Request, Response } from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import createHtttpError, { isHttpError } from "http-errors";
-import productRoutes from "./routes/products";
 import userRoutes from "./routes/user";
+import productRoutes from "./routes/products";
+import packageRoutes from "./routes/package";
 import MongooseStore from "connect-mongo";
 import session from "express-session";
 import env from "./utils/validateEnv";
@@ -40,6 +41,9 @@ app.use("/api/v1/products", productRoutes);
 
 // user endpoint
 app.use("/api/v1/users", userRoutes);
+
+// package endpoint
+app.use("/api/v1/packages", packageRoutes);
 
 // middleware to handle an endpoint not found
 app.use((req, res, next) => {
