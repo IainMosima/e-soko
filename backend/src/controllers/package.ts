@@ -23,7 +23,7 @@ export const getPackages: RequestHandler = async (req, res, next) => {
 
 export interface newitemStructure {
     productId: string,
-    quantity: number
+    price: number
 }
 
 // creating a new package
@@ -70,7 +70,7 @@ interface UpdatePackageParams {
 
 export interface itemStructure {
     productId: string,
-    quantity: number
+    price: number
 }
 
 

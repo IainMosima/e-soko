@@ -3,11 +3,10 @@ import createHttpError from "http-errors";
 
 export function itemCreateManager(newItemsProducts: newitemStructure[]){
     const ids = [''];
-
     // checking for duplicates  in array
     for (const item of newItemsProducts) {
         if (ids.includes(item.productId)){
-            throw createHttpError(400, "Existence of duplicate items");
+            throw createHttpError(400, "Existence of duplicate products");
         } else {
             ids.push(item.productId);
         }
@@ -25,7 +24,7 @@ export function itemUpdateManager(newItems:newitemStructure[], itemnsFromDb: ite
         if (itemsFromdbProductIds.includes(item.productId)) {
             const indexToUpdate = itemsFromdbProductIds.indexOf(item.productId);
             // updating the quantity
-            updatedItems[indexToUpdate].quantity = item.quantity;
+            updatedItems[indexToUpdate].price = item.price;
         } else {
             // appending the new item to the db
             updatedItems.push(item);
