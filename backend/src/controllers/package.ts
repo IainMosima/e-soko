@@ -23,7 +23,7 @@ export const getPackages: RequestHandler = async (req, res, next) => {
 
 export interface newitemStructure {
     productId: string,
-    price: number
+    price?: number
 }
 
 // creating a new package
@@ -70,7 +70,7 @@ interface UpdatePackageParams {
 
 export interface itemStructure {
     productId: string,
-    price: number
+    price?: number
 }
 
 
@@ -90,7 +90,7 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
     
     try {
         assertIsDefined(authenticatedUserId);
-        
+
         // making sure there are no duplicates products in item
         ItemManager.itemCreateManager(items);
 
