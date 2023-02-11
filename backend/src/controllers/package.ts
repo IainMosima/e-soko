@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { assertIsDefined } from "../utils/asserIsDefined";
 import * as ItemManager from "../utils/itemUpdateManger";
 
-// getting packages only if a session in progress
+// getting packages belonging to a specific user
 export const getPackages: RequestHandler = async (req, res, next) => {
     const authenticatedUserId = req.session.userId;
 
