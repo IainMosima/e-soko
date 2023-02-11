@@ -1,8 +1,9 @@
 import { RequestHandler } from "express";
 import PackageModel from "../models/package";
 import createHttpError from "http-errors";
-import mongoose, { Schema } from "mongoose"; 
+import mongoose from "mongoose"; 
 import { assertIsDefined } from "../utils/asserIsDefined";
+import { itemUpdateManager } from "../utils/itemUpdateManger";
 
 // getting packages only if a session in progress
 export const getPackages: RequestHandler = async (req, res, next) => {
@@ -24,8 +25,7 @@ export const getPackages: RequestHandler = async (req, res, next) => {
 interface PackageBody {
     packageName: string,
     items: [{
-        //nb _id act as the product's id
-        _id: Schema.Types.ObjectId,
+        productId: string,
         quantity: number
     }]
 }
@@ -60,20 +60,22 @@ export const createPackage: RequestHandler<unknown, unknown, PackageBody, unknow
 
 // updating a package
 interface UpdatePackageParams {
-    packageId: string,
+    packageId: string
 }
 
-interface UpdatePackageBody {
+export interface itemStructure {
+    productId: string,
+    quantity: number,
+    itemId?: string,
+    [Symbol.iterator](): IterableIterator<itemStructure>
+}
+
+
+interface UpdatePackageBody { 
     packageName: string,
-    items: [
-        {
-            _id: Schema.Types.ObjectId,
-            quantity: number
-        }
-    ]
-
-
+    items: Array<itemStructure>
 }
+
 
 export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdatePackageBody, unknown> = async (req, res, next) => {
     const authenticatedUserId = req.session.userId;
@@ -81,7 +83,8 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
     const packageName = req.body.packageName;
     const items = req.body.items;
 
-    // console.log(items);
+    console.log('Requested update to make');
+    console.log(items);
 
     try {
         assertIsDefined(authenticatedUserId);
@@ -94,27 +97,31 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
             throw createHttpError(404, "Product must have a name");
         }
 
-        const packageUpdate = await PackageModel.findById(packageId).exec();
+        const packageFromDb = await PackageModel.findById(packageId).exec();
         
-        if (packageUpdate) {
-            if(!packageUpdate.userId.equals(authenticatedUserId)) {
+        if (packageFromDb) {
+            if(!packageFromDb.userId.equals(authenticatedUserId)) {
                 throw createHttpError(404, "You cannot access this package");
             }
 
-            packageUpdate.packageName = packageName;
-            
-            // item management
-            const updatedItems = packageUpdate.items.filter(item => item._id !== items._id);
-            
-            
-            
+            console.log(packageFromDb.items);
+            console.log('updated packages');
+            // item update management
+            // updating an existing item if it exists
+            for (const item of items) {
+                if(item.itemId){
+                    console.log();
+                }
+            }
 
 
+
+           
+        } else {
+            throw createHttpError(404, "Package not found");
         }
-
 
     } catch (err) {
         next(err);
     }
-
 }

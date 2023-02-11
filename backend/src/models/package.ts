@@ -1,8 +1,7 @@
 import {InferSchemaType, Schema, model} from "mongoose";
 
 const ItemSchema = new Schema({
-    // here _id is equivalent to product id`
-    _id: { type: Schema.Types.ObjectId, required: true },
+    productId: { type: String, required: true },
     quantity: { type: Number, required: true }
 });
 
