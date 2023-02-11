@@ -86,12 +86,13 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
     const packageName = req.body.packageName;
     const items = req.body.items;
 
-    // making sure there are no duplicates products in item
-    ItemManager.itemCreateManager(items);
-
+    
     
     try {
         assertIsDefined(authenticatedUserId);
+        
+        // making sure there are no duplicates products in item
+        ItemManager.itemCreateManager(items);
 
         if (!mongoose.isValidObjectId(packageId)) {
             throw createHttpError(400, "Invalid product id");
