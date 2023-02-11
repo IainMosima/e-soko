@@ -10,8 +10,11 @@
 			"item": [
 				{
 					"name": "Get all products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "PATCH",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -23,17 +26,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/packages/63e5212a119a917f0f0a1993",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/packages",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
-								"packages",
-								"63e5212a119a917f0f0a1993"
+								"packages"
 							]
 						}
 					},
@@ -84,12 +84,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/products",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/products",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -120,12 +118,10 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/products/63e338f90ffb1e1e95577aa1?",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/products/63e338f90ffb1e1e95577aa1?",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -143,17 +139,15 @@
 					"response": []
 				},
 				{
-					"name": "Deleting a produc",
+					"name": "Deleting a product",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/products/63e36199c4511339d97f02d0",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/products/63e36199c4511339d97f02d0",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -175,12 +169,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/users/",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/users/",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -232,12 +224,10 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/users/signup",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/users/signup",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -254,12 +244,10 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/users/logout",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/users/logout",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -285,12 +273,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/users/login",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/users/login",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -312,12 +298,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/packages/",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/packages/",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -343,17 +327,44 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/packages/",
-							"protocol": "http",
+							"raw": "{{port}}/api/v1/packages/",
 							"host": [
-								"localhost"
+								"{{port}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
 								"packages",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating a package",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"_id\": \"63e7d74f570597fe1d5eef1f\",\n        \"userId\": \"63e3fb144d1547e4dd514e71\",\n        \"packageName\": \"My everyday Package\",\n        \"items\": [\n            {\n                \"productId\": \"63e361d6c4511339d97f02d6\",\n                \"quantity\": \"2\"\n            },\n            {\n                \"productId\": \"63e3f6ac3e1014ec4b4536d8\",\n                \"quantity\": \"4\"\n            },\n            {\n                \"productId\": \"63e3fc4c1da7e0415cc2e5b8\",\n                \"quantity\": \"3\"\n            }\n        ],\n        \"__v\": 1\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{port}}/api/v1/packages/63e7d74f570597fe1d5eef1f",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"packages",
+								"63e7d74f570597fe1d5eef1f"
 							]
 						}
 					},
@@ -385,7 +396,7 @@
 	"variable": [
 		{
 			"key": "port",
-			"value": "5000",
+			"value": "http://localhost:5000",
 			"type": "default"
 		}
 	]

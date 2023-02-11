@@ -109,10 +109,9 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
             }
 
             // item management
-            if(packageFromDb.items){
+            if(packageFromDb.items && items){
                 const updatedItems = ItemManager.itemUpdateManager(items, packageFromDb.items);
-                console.log(updatedItems);
-
+                
                 // updating the items in the db
                 packageFromDb.items = updatedItems;
             }

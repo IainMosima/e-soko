@@ -4,6 +4,7 @@ import createHttpError from "http-errors";
 export function itemCreateManager(newItemsProducts: newitemStructure[]){
     const ids = [''];
 
+    // checking for duplicates  in array
     for (const item of newItemsProducts) {
         if (ids.includes(item.productId)){
             throw createHttpError(400, "Existence of duplicate items");
