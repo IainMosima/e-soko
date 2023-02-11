@@ -1,14 +1,10 @@
 import {InferSchemaType, Schema, model} from "mongoose";
 
-const ItemSchema = new Schema({
-    productId: { type: String, required: true },
-    quantity: { type: Number, required: true }
-});
 
 const packageSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, required: true },
     packageName: { type: String, required: true },
-    items: [ItemSchema],
+    items: { type: Array },
 });
 
 type Package = InferSchemaType<typeof packageSchema>;

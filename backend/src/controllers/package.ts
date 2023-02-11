@@ -3,7 +3,7 @@ import PackageModel from "../models/package";
 import createHttpError from "http-errors";
 import mongoose from "mongoose"; 
 import { assertIsDefined } from "../utils/asserIsDefined";
-import { itemUpdateManager } from "../utils/itemUpdateManger";
+import * as ItemManager from "../utils/itemUpdateManger";
 
 // getting packages only if a session in progress
 export const getPackages: RequestHandler = async (req, res, next) => {
@@ -21,13 +21,15 @@ export const getPackages: RequestHandler = async (req, res, next) => {
     }
 }
 
+export interface newitemStructure {
+    productId: string,
+    quantity: number
+}
+
 // creating a new package
 interface PackageBody {
     packageName: string,
-    items: [{
-        productId: string,
-        quantity: number
-    }]
+    items: Array<newitemStructure>
 }
 
 export const createPackage: RequestHandler<unknown, unknown, PackageBody, unknown> = async (req, res, next) => {
@@ -35,9 +37,12 @@ export const createPackage: RequestHandler<unknown, unknown, PackageBody, unknow
     const packageName = req.body.packageName;
     const items = req.body.items;
 
-
+    
     try {
         assertIsDefined(authenticatedUserId);
+
+        // making sure there are no duplicates products in item
+        ItemManager.itemCreateManager(items);
 
         if(!packageName) {
             throw createHttpError(400, "Package must have a name");
@@ -65,9 +70,7 @@ interface UpdatePackageParams {
 
 export interface itemStructure {
     productId: string,
-    quantity: number,
-    itemId?: string,
-    [Symbol.iterator](): IterableIterator<itemStructure>
+    quantity: number
 }
 
 
@@ -83,14 +86,15 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
     const packageName = req.body.packageName;
     const items = req.body.items;
 
-    console.log('Requested update to make');
-    console.log(items);
+    // making sure there are no duplicates products in item
+    ItemManager.itemCreateManager(items);
 
+    
     try {
         assertIsDefined(authenticatedUserId);
 
         if (!mongoose.isValidObjectId(packageId)) {
-            throw createHttpError(400, "Invalid note id");
+            throw createHttpError(400, "Invalid product id");
         }
 
         if (!packageName) {
@@ -104,22 +108,27 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
                 throw createHttpError(404, "You cannot access this package");
             }
 
-            console.log(packageFromDb.items);
-            console.log('updated packages');
-            // item update management
-            // updating an existing item if it exists
-            for (const item of items) {
-                if(item.itemId){
-                    console.log();
-                }
+            // item management
+            if(packageFromDb.items){
+                const updatedItems = ItemManager.itemUpdateManager(items, packageFromDb.items);
+                console.log(updatedItems);
+
+                // updating the items in the db
+                packageFromDb.items = updatedItems;
             }
 
+            // updating the package name
+            packageFromDb.packageName = packageName;
+            
+            // saving the updated package
+            const updatedPackage = await packageFromDb.save();
 
-
+            res.status(200).send({ success: true, message: "Package updated successfully", data: updatedPackage });
            
         } else {
             throw createHttpError(404, "Package not found");
         }
+
 
     } catch (err) {
         next(err);

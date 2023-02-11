@@ -1,23 +1,35 @@
-import { itemStructure } from "../controllers/package";
-import mongoose from "mongoose";
+import { newitemStructure ,itemStructure } from "../controllers/package";
 import createHttpError from "http-errors";
 
+export function itemCreateManager(newItemsProducts: newitemStructure[]){
+    const ids = [''];
+
+    for (const item of newItemsProducts) {
+        if (ids.includes(item.productId)){
+            throw createHttpError(400, "Existence of duplicate items");
+        } else {
+            ids.push(item.productId);
+        }
+    }
+
+}
 
 
-export function itemUpdateManager(newItems:itemStructure, itemnsFromDb: itemStructure) {
+export function itemUpdateManager(newItems:newitemStructure[], itemnsFromDb: itemStructure[]) {
     const updatedItems = [...itemnsFromDb];
-    const updatedItemsId = itemnsFromDb.map((item=>item.productId));
+    const itemsFromdbProductIds = itemnsFromDb.map(item => item.productId);
 
     for (const item of newItems) {
-        // updating a prior existing item
-        if (item.productId && updatedItemsId.includes(item.productId)) {
-            // removing the item from items from db list
-            updatedItemsId
-
+        // checking if the item exists
+        if (itemsFromdbProductIds.includes(item.productId)) {
+            const indexToUpdate = itemsFromdbProductIds.indexOf(item.productId);
+            // updating the quantity
+            updatedItems[indexToUpdate].quantity = item.quantity;
         } else {
-            throw createHttpError(400, "Product does not exist in package");
+            // appending the new item to the db
+            updatedItems.push(item);
         }
-
     }
     
+    return updatedItems;
 }
