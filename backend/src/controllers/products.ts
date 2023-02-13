@@ -84,7 +84,7 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
 
 // updating a product
 interface UpdateProductParams {
-    productId: string
+    productId: mongoose.Types.ObjectId;
 }
 
 interface UpdateProductBody {

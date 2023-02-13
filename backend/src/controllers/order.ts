@@ -2,8 +2,8 @@ import { RequestHandler } from "express";
 import OrderModel from "../models/order";
 import mongoose from "mongoose";
 import { assertIsDefined }  from "../utils/asserIsDefined";
-import * as OrderManager from "../utils/orderManager";
 import createHttpError from "http-errors";
+import { mpesaExpress } from "../daraja/mpesa-express";
 
 // getting all orders for a specific user
 export const getOrders: RequestHandler = async (req, res, next) => {
@@ -21,25 +21,60 @@ export const getOrders: RequestHandler = async (req, res, next) => {
 }
 
 
+// creating a new order
+interface OrderCreateParams {
+    packageId: mongoose.Types.ObjectId;
+}
 interface OrderBody {
     userId: string,
-    packageId: string,
-    price: number
+    price: number,
+    paymentType: string
 }
 
-export const createOrder: RequestHandler<unknown, unknown, OrderBody, unknown> = async (req, res, next) => {
+export const createOrder: RequestHandler<OrderCreateParams, unknown, OrderBody, unknown> = async (req, res, next) => {
     const authenticatedUserId = req.session.userId;
-    const packageIds = req.body.packageId;
-    const price = req.body.price;               
+    const authenticatedUserPhoneNumber = req.session.phoneNumber;
+    const packageId = req.params.packageId;
+    const price = req.body.price;
+    const paymentType = req.body.paymentType
 
     try {
         assertIsDefined(authenticatedUserId);
         
-        if (!packageIds) {
-            throw createHttpError(400, "No package checked out");
+        if (!packageId) {
+            throw createHttpError(400, "No package checked out!");
         }
 
-        
+        let newOrder;
+        const newOrderParams = {
+            userId: authenticatedUserId,
+            packageId: packageId,
+            price: price,
+            paid: false,
+            delivered: false
+            };
+
+        if (paymentType && price && paymentType && authenticatedUserPhoneNumber) {
+            switch (paymentType) {
+                // will add other payment methods here
+                case 'mpesa':
+                    // eslint-disable-next-line no-case-declarations
+                    const response = await mpesaExpress(price, authenticatedUserPhoneNumber);
+                    if (response) {
+                        newOrderParams.paid = true;
+                        newOrder = await OrderModel.create(newOrderParams);
+                        res.status(201).json(newOrder);
+
+                    }
+                    
+                    break;
+            
+            }
+        } else {
+            newOrder = await OrderModel.create(newOrderParams);
+            res.status(201).json(newOrder);
+
+        }
 
         
 

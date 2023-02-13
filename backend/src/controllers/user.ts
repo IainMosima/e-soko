@@ -37,7 +37,7 @@ export const getProfileImage: RequestHandler = async (req, res, next) => {
 interface SignupBody {
     username?: string,
     email?: string,
-    phoneNumber?: string,
+    phoneNumber?: number,
     location?: string,
     password?: string,
     profileImg?: File
@@ -92,8 +92,9 @@ export const signup: RequestHandler<unknown, unknown, SignupBody, unknown> = asy
                 profileImgKey: profileImgKey
             });
 
-            // creating a session
+            // stroing userId and phoneNumber in session
             req.session.userId = newUser._id;
+            req.session.phoneNumber = newUser.phoneNumber;
 
             res.status(201).json(newUser);
 
@@ -146,6 +147,7 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
         }
 
         req.session.userId = user._id;
+        req.session.phoneNumber = user.phoneNumber;
 
         res.status(201).json(user);
 

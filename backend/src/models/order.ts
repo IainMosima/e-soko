@@ -4,7 +4,8 @@ const OrderSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, required: true },
     packageId: { type: Schema.Types.ObjectId, required: true, },
     price: { type: Number, required: true },
-    status: { type: String, default: 'not-paid', select: false }
+    paid: { type: Boolean, default: false },
+    delivered: { type: Boolean, default: false }
 });
 
 type Order = InferSchemaType<typeof OrderSchema>;
