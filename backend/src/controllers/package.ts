@@ -21,12 +21,12 @@ export const getPackages: RequestHandler = async (req, res, next) => {
     }
 }
 
+// creating a new package
 export interface newitemStructure {
     productId: string,
     price?: number
 }
 
-// creating a new package
 interface PackageBody {
     packageName: string,
     items: Array<newitemStructure>
@@ -41,12 +41,13 @@ export const createPackage: RequestHandler<unknown, unknown, PackageBody, unknow
     try {
         assertIsDefined(authenticatedUserId);
 
-        // making sure there are no duplicates products in item
-        ItemManager.itemCreateManager(items);
-
         if(!packageName) {
             throw createHttpError(400, "Package must have a name");
         }
+        
+        // making sure there are no duplicates products in item
+        ItemManager.itemCreateManager(items);
+
 
         const newPackage = await PackageModel.create({
             userId: authenticatedUserId,

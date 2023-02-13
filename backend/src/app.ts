@@ -6,6 +6,7 @@ import createHtttpError, { isHttpError } from "http-errors";
 import userRoutes from "./routes/user";
 import productRoutes from "./routes/products";
 import packageRoutes from "./routes/package";
+import orderRoutes from "./routes/order";
 import MongooseStore from "connect-mongo";
 import session from "express-session";
 import env from "./utils/validateEnv";
@@ -44,6 +45,9 @@ app.use("/api/v1/users", userRoutes);
 
 // package endpoint
 app.use("/api/v1/packages", requireAuth, packageRoutes);
+
+// order endpoint
+app.use("/api/v1/orders", requireAuth, orderRoutes);
 
 // middleware to handle an endpoint not found
 app.use((req, res, next) => {
