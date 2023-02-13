@@ -26,14 +26,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{port}}/api/v1/packages",
+							"raw": "{{port}}/api/v1/products",
 							"host": [
 								"{{port}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"packages"
+								"products"
 							]
 						}
 					},
@@ -319,7 +319,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\":\"63e3fb144d1547e4dd514e71\",\n    \"packageName\":\"My Comrade Package\",\n    \"items\": [{\n        \"_id\":\"63e361d6c4511339d97f02d6\",\n        \"quantity\":\"2\"\n    },\n    {\n        \"_id\":\"63e3f6ac3e1014ec4b4536d8\",\n        \"quantity\":\"1\"\n    }\n    ]\n}",
+							"raw": "{\n    \"userId\":\"63e3fb144d1547e4dd514e71\",\n    \"packageName\":\"My Comrade Package\",\n    \"items\": [{\n        \"productId\":\"9e4712ad412990686043ef6a34a8fa9f\",\n        \"price\":\"800\"\n    },\n    {\n        \"productId\":\"c2eae4863bfbd6651adb11f33504d3d4\",\n        \"price\":\"750\"\n    }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -365,6 +365,60 @@
 								"v1",
 								"packages",
 								"63e7d74f570597fe1d5eef1f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Get all orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{port}}/api/v1/orders/",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"63e3fb144d1547e4dd514e71\",\n    \"price\": \"2300\",\n    \"paymentType\": \"mpesa\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{port}}/api/v1/orders/63e7e4b98e72e85050fb7038",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"63e7e4b98e72e85050fb7038"
 							]
 						}
 					},
