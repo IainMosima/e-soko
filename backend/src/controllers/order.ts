@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import OrderModel from "../models/order";
 import mongoose from "mongoose";
 import { assertIsDefined }  from "../utils/asserIsDefined";
+import PackageModel from "../models/package";
 import createHttpError from "http-errors";
 import { mpesaExpress } from "../daraja/mpesa-express";
 
@@ -25,6 +26,7 @@ export const getOrders: RequestHandler = async (req, res, next) => {
 interface OrderCreateParams {
     packageId: mongoose.Types.ObjectId;
 }
+
 interface OrderBody {
     userId: string,
     price: number,
@@ -45,12 +47,18 @@ export const createOrder: RequestHandler<OrderCreateParams, unknown, OrderBody, 
             throw createHttpError(400, "No package checked out!");
         }
 
+        const packageFromDb = await PackageModel.findById(packageId);
+
+        if (!packageFromDb) {
+            createHttpError(404, "Invalid PackageId, package not found!");
+        }
+
         let newOrder;
         const newOrderParams = {
             userId: authenticatedUserId,
             packageId: packageId,
             price: price,
-            paid: false,
+            paymentStatus: 'notPaid',
             delivered: false
             };
 
@@ -60,11 +68,14 @@ export const createOrder: RequestHandler<OrderCreateParams, unknown, OrderBody, 
                 case 'mpesa':
                     // eslint-disable-next-line no-case-declarations
                     const response = await mpesaExpress(price, authenticatedUserPhoneNumber);
-                    if (response) {
-                        newOrderParams.paid = true;
+                    // eslint-disable-next-line no-case-declarations
+                    const resultCode = response.ResponseCode;
+                    
+                    if (resultCode) {
+                        newOrderParams.paymentStatus = 'pending';
                         newOrder = await OrderModel.create(newOrderParams);
+        
                         res.status(201).json(newOrder);
-
                     }
                     
                     break;
@@ -82,4 +93,25 @@ export const createOrder: RequestHandler<OrderCreateParams, unknown, OrderBody, 
         next(error);
     }
 }
+
+// canceling an order
+export const cancelOrder: RequestHandler = async (req, res, next) => {
+    const orderId = req.params.orderId;
+
+    try {
+        if (!mongoose.isValidObjectId(orderId)) {
+            throw createHttpError(400, "Order must be a valid id!")
+        }
+
+        const order = await OrderModel.findById(orderId).exec();
+        if (!order) {
+            throw createHttpError(404, "Order not found");
+        }
+        await order.remove();
+
+    } catch (err) {
+        next(err);
+    }
+}
+
 

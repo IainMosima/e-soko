@@ -3,8 +3,9 @@ import UserModel from "../models/users";
 import createHttpError from "http-errors";
 import * as AuthSec from "../utils/authSec";
 import env from "../utils/validateEnv";
-import * as s3APi from "../aws/s3";
+import * as s3API from "../aws/s3";
 import { unlinkFile } from "../utils/unlinkFIle";
+import mongoose from "mongoose";
 
 
 const usersBucket = env.AWS_BUCKET_USERS_NAME;
@@ -15,7 +16,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     const authenticatedUser = req.session.userId;
 
     try {
-        const user = await UserModel.findById(authenticatedUser).select("+username +email +phoneNumber +location +profileImgKey").exec();
+        const user = await UserModel.findById(authenticatedUser).select("username email phoneNumber location profileImgKey").exec();
         res.status(200).send(user);
     } catch (error) {
         next (error);
@@ -26,7 +27,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
 export const getProfileImage: RequestHandler = async (req, res, next) => {
     const key = req.params.key;
     try {
-        const profileImage = await s3APi.getImage(key, usersBucket);
+        const profileImage = await s3API.getImage(key, usersBucket);
         res.status(200).send(profileImage);
     } catch (error) {
         next (error);
@@ -76,7 +77,7 @@ export const signup: RequestHandler<unknown, unknown, SignupBody, unknown> = asy
         try{
             // uploading user profile picture to s3 user bucket
             if (profileImg) {
-                const result = await s3APi.uploadFile(profileImg, usersBucket);
+                const result = await s3API.uploadFile(profileImg, usersBucket);
                 await unlinkFile(profileImg.path);
 
                 profileImgKey = result.Key;
@@ -133,7 +134,7 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
             throw createHttpError(400, "Parameters Missing");
         }
 
-        const user = await UserModel.findOne({ username: username }).select("+_id +username +password +email +phoneNumber +location +profileImgKey").exec();
+        const user = await UserModel.findOne({ username: username }).exec();
 
         if(!user) {
             throw createHttpError(401, "Invalid username or password");
@@ -152,6 +153,101 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
         res.status(201).json(user);
 
     } catch(error) {
+        next(error);
+    }
+}
+
+// deleting an account
+export const removeAccount: RequestHandler = async (req, res, next) => {
+    const authenticatedUserId = req.params.userId;
+
+    try {
+        const user = await UserModel.findById(authenticatedUserId);
+
+        await user?.remove();
+
+    } catch (error) {
+        next(error);
+    }
+
+}
+
+// updating a user's profile
+interface UpdateProfileParam {
+    userId: mongoose.Types.ObjectId
+}
+
+interface UpdateProfileBody {
+    username?: string,
+    email?: string,
+    phoneNumber?: number,
+    location?: string,
+    prevPassword?: string,
+    newPassword?: string,
+    profileImg?: File
+}
+export const updateUserProfile: RequestHandler <UpdateProfileParam, unknown, UpdateProfileBody, unknown> = async (req, res, next) => {
+    const userId = req.params.userId;
+    const username = req.body.username;
+    const email = req.body.email;
+    const phoneNumber = req.body.phoneNumber;
+    const location = req.body.location;
+    const prevPassword = req.body.prevPassword;
+    const newPassword = req.body.newPassword;
+    const profileImg = req.file;
+
+    try {
+        if (!mongoose.isValidObjectId(userId)) {
+            throw createHttpError(400, "UserId missing");
+        }
+
+        const user = await UserModel.findById(userId).exec();
+
+        if(!user) {
+            throw createHttpError(404, "User not found");
+        }
+
+        if (username) user.username = username;
+        if (email) user.email = email;
+        if (phoneNumber) user.phoneNumber = phoneNumber;
+        if (location) user.location = location;
+
+        // updating user password
+        if (newPassword && prevPassword) {
+            // checking for password mismatch
+            const passwordMatch = await AuthSec.comparePassword(prevPassword, user.password);
+
+            if (!passwordMatch) {
+                throw createHttpError(401, "Wrong previous password");
+            }
+
+            // updating the password with a new salt and hashed one
+            user.password = await AuthSec.hashAndSalt(newPassword);
+        }
+
+        // updating user's profile image
+        if (profileImg) {
+            // deleting the prior profile image
+            if (user.profileImgKey) {
+                await s3API.deleteImage(user.profileImgKey, usersBucket);
+            }
+            // uploading users new profile image
+            let imageKey = '';
+            const result = await s3API.uploadFile(profileImg, usersBucket);
+            await unlinkFile(profileImg.path);
+            imageKey = result.Key;
+            user.profileImgKey = imageKey;
+        }
+
+        const updatedUserProfile = await user.save();
+
+        res.status(200).send({ 
+            success: true, 
+            message: "Profile updated successfully", 
+            data: updatedUserProfile
+         })
+
+    } catch (error) {
         next(error);
     }
 }

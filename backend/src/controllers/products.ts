@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import ProductModel from "../models/product";
-import * as s3Api from "../aws/s3";
+import * as s3API from "../aws/s3";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import env from "../utils/validateEnv";
@@ -23,7 +23,7 @@ export const getProducts: RequestHandler = async (req, res, next) => {
 export const getImage: RequestHandler = async (req, res, next) => {
     const key = req.params.key;
     try {
-        const readStream = await s3Api.getImage(key, productsBucket);
+        const readStream = await s3API.getImage(key, productsBucket);
         readStream.pipe(res);
     } catch (error) {
         next(error);
@@ -53,7 +53,7 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
 
     try {
         if (productImg){
-            const result = await s3Api.uploadFile(productImg, productsBucket);
+            const result = await s3API.uploadFile(productImg, productsBucket);
             // deleting an image from the upload dir once uploaded
             await unlinkFile(productImg.path);
             
@@ -74,7 +74,7 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
     } catch (error) {
         // deleting the uploaded productImg from s3 if it exists
         if (productImgKey) {
-            await s3Api.deleteImage(productImgKey, productsBucket);
+            await s3API.deleteImage(productImgKey, productsBucket);
         }
         next(error);
     }
@@ -83,7 +83,7 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
 
 
 // updating a product
-interface UpdateProductParams {
+interface UpdateProductParam {
     productId: mongoose.Types.ObjectId;
 }
 
@@ -91,14 +91,16 @@ interface UpdateProductBody {
     productName?: string,
     productImg?: File,
     categoryName?: string,
-    available?: boolean
+    available?: boolean,
+    price: number
 }
 
 export const updateProduct: RequestHandler<unknown, unknown, UpdateProductBody, unknown> = async (req, res, next) => {
-    const productId = (req.params as UpdateProductParams).productId;
+    const productId = (req.params as UpdateProductParam).productId;
     const productName = req.body.productName;
     const categoryName = req.body.categoryName;
     const available = req.body.available;
+    const price = req.body.price;
     const productImg = req.file;
 
     try {
@@ -114,36 +116,41 @@ export const updateProduct: RequestHandler<unknown, unknown, UpdateProductBody, 
         if (productName) product.productName = productName;
         if (categoryName) product.categoryName = categoryName;
         if (available) product.available = available;
+        if (price) product.price = price;
+        
         if (productImg) {
             // deletinng the image from the s3 bucket
             if (product.productImgKey) {
-                await s3Api.deleteImage(product.productImgKey, productsBucket);
+                await s3API.deleteImage(product.productImgKey, productsBucket);
             }
             // uploading the new image to s3
             let imageKey = '';
-            if (productImg){
-                const result = await s3Api.uploadFile(productImg, productsBucket);
-                // deleting an image from the upload dir once uploaded
-                await unlinkFile(productImg.path);
-                imageKey = result.Key;
-            }
+            const result = await s3API.uploadFile(productImg, productsBucket);
+            // deleting an image from the upload dir once uploaded
+            await unlinkFile(productImg.path);
+            imageKey = result.Key;
+            
             product.productImgKey = imageKey;
         }
 
         const updatedProduct = await product.save();
-        res.status(200).send({ success: true, message: "Product updated successfully", data: updatedProduct });
+        res.status(200).send({ 
+            success: true, 
+            message: "Product updated successfully", 
+            data: updatedProduct
+         });
     } catch (error) {
         next(error);
     }
 };
 
 // deleting a product from the mongodb and s3Bucket
-export const deleteProduct: RequestHandler = async(req, res, next) => {
+export const deleteProduct: RequestHandler = async (req, res, next) => {
     const productId = req.params.productId;
 
     try {
         if (!mongoose.isValidObjectId(productId)) {
-            throw createHttpError(400, "Product must have a valid id");
+            throw createHttpError(400, "Product must have a valid id!");
         }
         const product = await ProductModel.findById(productId).exec();
 
@@ -153,7 +160,7 @@ export const deleteProduct: RequestHandler = async(req, res, next) => {
 
         // deleting the image from the s3 bucket
         if (product.productImgKey) {
-            await s3Api.deleteImage(product.productImgKey, productsBucket);
+            await s3API.deleteImage(product.productImgKey, productsBucket);
         }
 
         // deleting the product details from mongodb

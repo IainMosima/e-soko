@@ -4,7 +4,7 @@ const OrderSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, required: true },
     packageId: { type: Schema.Types.ObjectId, required: true, },
     price: { type: Number, required: true },
-    paid: { type: Boolean, default: false },
+    paymentStatus: { type: String, default: false },
     delivered: { type: Boolean, default: false }
 });
 
