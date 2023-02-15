@@ -134,12 +134,11 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
             throw createHttpError(400, "Parameters Missing");
         }
 
-        const user = await UserModel.findOne({ username: username }).exec();
+        const user = await UserModel.findOne({ username: username }).select("+password +phoneNumber").exec();
 
         if(!user) {
             throw createHttpError(401, "Invalid username or password");
         }
-
         // checking for password match
         const passwordMatch = await AuthSec.comparePassword(password, user.password);
         

@@ -53,6 +53,13 @@ export const createOrder: RequestHandler<OrderCreateParams, unknown, OrderBody, 
             createHttpError(404, "Invalid PackageId, package not found!");
         }
 
+        // checking if a certain package is already checkedOut
+        const packageIdChecker = await OrderModel.find({ packageId: packageId }).count();
+
+        if (packageIdChecker) {
+            throw createHttpError(404, "Package already checked out");
+        }
+
         let newOrder;
         const newOrderParams = {
             userId: authenticatedUserId,
@@ -61,8 +68,8 @@ export const createOrder: RequestHandler<OrderCreateParams, unknown, OrderBody, 
             paymentStatus: 'notPaid',
             delivered: false
             };
-
-        if (paymentType && price && paymentType && authenticatedUserPhoneNumber) {
+        
+        if (paymentType && price && authenticatedUserPhoneNumber) {
             switch (paymentType) {
                 // will add other payment methods here
                 case 'mpesa':
