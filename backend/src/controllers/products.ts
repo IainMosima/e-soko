@@ -9,6 +9,18 @@ import { unlinkFile } from "../utils/unlinkFIle";
 
 const productsBucket = env.AWS_BUCKET_PRODUCTS_NAME
 
+// getting query data
+export const filterProducts: RequestHandler = async (req, res, next) => {
+    const query = req.params.query;
+
+    try {
+        const products = await ProductModel.find({ productName: new RegExp('^' +query, 'i') });
+        res.status(200).json(products);
+    } catch (err) {
+        next(err);
+    }
+}
+
 // fetch all products available in the db
 export const getProducts: RequestHandler = async (req, res, next) => {
     try {
@@ -29,6 +41,7 @@ export const getImage: RequestHandler = async (req, res, next) => {
         next(error);
     }    
 }
+
 
 // creating a new product
 interface CreateProductBody {

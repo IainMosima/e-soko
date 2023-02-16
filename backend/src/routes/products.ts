@@ -18,6 +18,9 @@ router.get('/:key', ProductsController.getImage);
 // updating a product
 router.patch('/:productId', upload.single('productImg'), ProductsController.updateProduct);
 
+// filtering a product
+router.get('/query/:query', ProductsController.filterProducts);
+
 // deleting a product
 router.delete('/:productId', ProductsController.deleteProduct);
 

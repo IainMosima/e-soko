@@ -1,16 +1,7 @@
-import S3 from "aws-sdk/clients/s3";
 import sharp from "sharp";
-import env from "../utils/validateEnv"
+import AWS from "./aws";
 
-const region = env.AWS_REGION;
-const accessKeyId = env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = env.AWS_SECRET_KEY;
-
-const s3 = new S3({
-    region, 
-    accessKeyId,
-    secretAccessKey
-});
+const s3 = new AWS.S3();
 
 
 // upload a file to s3

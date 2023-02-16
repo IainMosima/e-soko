@@ -11,11 +11,15 @@ import MongooseStore from "connect-mongo";
 import session from "express-session";
 import env from "./utils/validateEnv";
 import { requireAuth } from "./middleware/requireAuth";
+import cors from "cors";
 
 
 
 
 const  app = express();
+
+// enabling cors for all routes
+app.use(cors());
 
 // Content-Type: application/json handling
 app.use(bodyParser.json());
