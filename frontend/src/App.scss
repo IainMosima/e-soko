@@ -1,6 +1,8 @@
 .app {
   background-color: var(--primary-color);
   font-family: var(--font-base);
+
+  width: 0;
 }
 
 .app__container {
@@ -9,10 +11,10 @@
 
   display: flex;
   flex-direction: row;
+  top: 3;
 
 }
 
 .app__flex {
   display: flex;
-  
 }

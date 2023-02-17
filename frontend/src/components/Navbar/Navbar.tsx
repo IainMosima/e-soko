@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { images } from "../../constants";
+import { Images } from "../../constants";
 import { useDebounce } from "use-debounce";
 
 import SearchBar from "../SearchBar/SearchBar";
@@ -39,8 +39,10 @@ const Navbar = () => {
     return ( 
         <nav className="app__navbar">
             <div className="app__navbar-logo">
-                <img src={images.logo} alt="logo"/>
+                <img src={Images.logo} alt="logo"/>
+                <h3>E-Soko</h3>
             </div>
+
             <div className="app__searchBar">
                 <SearchBar 
                     query={query}
@@ -49,6 +51,25 @@ const Navbar = () => {
                     } }
                     />
             </div>
+                
+            <div className="app__navbar-links">
+                <div>
+                    <h4>Categories</h4>
+                    <img src={Images.dropDown} alt='drop-down'/>
+                </div>
+
+                <div>
+                    <h4>Packages </h4>
+                    <img src={Images.dropDown} alt='drop-down'/>
+                </div>
+
+                <div>
+                    <h4>My Account </h4>
+                    <img src={Images.dropDown} alt='drop-down'/>
+                </div>
+            </div>
+            
+
         </nav>
      );
 }

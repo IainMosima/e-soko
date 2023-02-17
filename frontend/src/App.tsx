@@ -1,6 +1,7 @@
 import { Navbar } from "./components";
-import './App.scss';
 import { useEffect } from "react";
+
+import './App.scss';
 
 function App() {
   useEffect(() => {
