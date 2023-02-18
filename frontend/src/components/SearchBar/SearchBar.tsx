@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { Product } from "../../models/product";
-
+import React from "react";
 import "./SearchBar.scss";
 
 interface SearchBarProps {

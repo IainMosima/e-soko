@@ -54,20 +54,26 @@ const Navbar = () => {
                 
             <div className="app__navbar-links">
                 <div>
+                    <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
                     <h4>Categories</h4>
-                    <img src={Images.dropDown} alt='drop-down'/>
+                    <img src={Images.dropDownIcon} alt='drop-down'/>
                 </div>
 
                 <div>
+                    <img src={Images.packageIcon} alt='package-icon' className='icon'/>
                     <h4>Packages </h4>
-                    <img src={Images.dropDown} alt='drop-down'/>
+                    <img src={Images.dropDownIcon} alt='drop-down'/>
                 </div>
 
                 <div>
+                    <img src={Images.accountIcon} alt='account-icon' className='icon'/>
                     <h4>My Account </h4>
-                    <img src={Images.dropDown} alt='drop-down'/>
+                    <img src={Images.dropDownIcon} alt='drop-icon'/>
                 </div>
+
             </div>
+            
+            <img src={Images.menuIcon} alt='menu-down' className="menu-icon"/>
             
 
         </nav>
