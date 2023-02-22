@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Images } from "../../constants";
 import { useDebounce } from "use-debounce";
+import { motion } from "framer-motion";
 
 import SearchBar from "../SearchBar/SearchBar";
 import * as ProductsApi from "../../network/products";
 import "./Navbar.scss";
 import { Product } from "../../models/product";
+import { createGrid } from "@mui/system";
 
 const Navbar = () => {
     const [query, setQuery] = useState('');
     const [debouncedQuery] = useDebounce(query, 500);
     const [searchResults, setSearchResults] = useState<Product[]>();
+    const [toggle, setToggle] = useState(false);
+    const [categoryToggle, setcategoryToggle] = useState(false);
+    const categories = ['Cereals', 'Vegetables', 'Fruits', 'Herbs'];
 
     useEffect(() => {   
         async function perfomSearch () {
@@ -34,7 +39,7 @@ const Navbar = () => {
 
     }
 
-    
+    console.log(categoryToggle);
     
     return ( 
         <nav className="app__navbar">
@@ -53,10 +58,24 @@ const Navbar = () => {
             </div>
                 
             <div className="app__navbar-links">
-                <div>
+                <div onClick={()=>setcategoryToggle(!categoryToggle)}>
                     <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
                     <h4>Categories</h4>
                     <img src={Images.dropDownIcon} alt='drop-down'/>
+
+                    {categoryToggle && 
+                        <motion.div
+                            whileInView={{y: [0, 10]}}
+                            transition={{ duration: 0.1, ease: 'easeOut' }}
+                            className="more_info"
+                        >
+                            <ul>
+                                {categories.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </ul>
+                        </motion.div>
+                    }
                 </div>
 
                 <div>

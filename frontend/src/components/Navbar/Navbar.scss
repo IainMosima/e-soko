@@ -31,10 +31,10 @@
     
     }
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 768px) {
         img {
-            width: 50px;
-            height: 50px;
+            width: 4rem;
+            height: 4rem;
         }
 
         h3 {
@@ -54,6 +54,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
 
         img:nth-child(1) {
             width: 30px;
@@ -62,6 +63,45 @@
 
         &:nth-child(even) {
             padding: 0 15px 0 15px;
+        }
+
+        .more_info {
+            position: absolute;
+            top: 70px;
+            border: 1px solid black;
+            width: 11rem;
+
+            ul {
+                transition: all 0.1s ease-in;
+                transition-delay: 0ms;
+                z-index: 3;
+                width: inherit;
+    
+                li {
+                    list-style-type: none;
+                    padding: 10px;
+                    font-size: large;
+                    border-radius: 10px 10px 10px 10px;
+                    -webkit-border-radius: 10px 10px 10px 10px;
+                    -moz-border-radius: 10px 10px 10px 10px;
+                    width: inherit;
+    
+                    &:hover{
+                        background-color: var(--green-color);
+                        color: var(--white-color);
+                        font-weight: bold;
+                    }
+                }
+            }
+
+            border-radius: 10px 10px 10px 10px;
+            -webkit-border-radius: 10px 10px 10px 10px;
+            -moz-border-radius: 10px 10px 10px 10px;
+
+            box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
+            -webkit-box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
+            -moz-box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
+            
         }
 
 
@@ -89,15 +129,15 @@
 
 
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 768px) {
         display: none;
 
     }
     
 }
 
-// small screens
-@media (min-width: 768px){
+// for big screens
+@media (min-width: 769px){
     .menu-icon{
         display: none;
     }
