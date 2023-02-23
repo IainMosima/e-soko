@@ -7,7 +7,6 @@ import SearchBar from "../SearchBar/SearchBar";
 import * as ProductsApi from "../../network/products";
 import "./Navbar.scss";
 import { Product } from "../../models/product";
-import { createGrid } from "@mui/system";
 
 const Navbar = () => {
     const [query, setQuery] = useState('');
@@ -15,7 +14,19 @@ const Navbar = () => {
     const [searchResults, setSearchResults] = useState<Product[]>();
     const [toggle, setToggle] = useState(false);
     const [categoryToggle, setcategoryToggle] = useState(false);
+    const [accountToggle, setAccountToggle] = useState(false);
     const categories = ['Cereals', 'Vegetables', 'Fruits', 'Herbs'];
+    const myAccount = [
+        {
+            img: Images.profileDefault,
+            name: 'My Profile'
+        },
+        {
+            img: Images.orderIcon,
+            name: 'Orders'
+        }
+        // will add inbox later on
+    ]
 
     useEffect(() => {   
         async function perfomSearch () {
@@ -39,7 +50,24 @@ const Navbar = () => {
 
     }
 
-    console.log(categoryToggle);
+    function toggleHandler(icon: string) {
+        switch (icon) {
+            case 'categories':
+                setcategoryToggle(!categoryToggle);
+                setAccountToggle(false);
+                break;
+            
+            case 'myAccount':
+                setAccountToggle(!accountToggle);
+                setcategoryToggle(false);
+                break;
+            
+            default:
+                setAccountToggle(false);
+                setcategoryToggle(false);
+        }
+    }
+
     
     return ( 
         <nav className="app__navbar">
@@ -58,7 +86,7 @@ const Navbar = () => {
             </div>
                 
             <div className="app__navbar-links">
-                <div onClick={()=>setcategoryToggle(!categoryToggle)}>
+                <div onClick={()=>toggleHandler('categories')}>
                     <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
                     <h4>Categories</h4>
                     <img src={Images.dropDownIcon} alt='drop-down'/>
@@ -84,10 +112,25 @@ const Navbar = () => {
                     <img src={Images.dropDownIcon} alt='drop-down'/>
                 </div>
 
-                <div>
+                <div onClick={()=>toggleHandler('myAccount')}>
                     <img src={Images.accountIcon} alt='account-icon' className='icon'/>
                     <h4>My Account </h4>
                     <img src={Images.dropDownIcon} alt='drop-icon'/>
+
+                    {accountToggle && 
+                        <motion.div
+                            whileInView={{y: [0, 10]}}
+                            transition={{ duration: 0.1, ease: 'easeOut' }}
+                            className="more_info my_account"
+                        >   
+                            <ul>
+                                <button>Sign In</button>
+                                <hr />                                {myAccount.map((item, index) => (
+                                    <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
+                                ))}
+                            </ul>
+                        </motion.div>
+                    }
                 </div>
 
             </div>

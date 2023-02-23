@@ -76,6 +76,8 @@
                 transition-delay: 0ms;
                 z-index: 3;
                 width: inherit;
+                display: flex;
+                flex-direction: column;
     
                 li {
                     list-style-type: none;
@@ -88,8 +90,6 @@
     
                     &:hover{
                         background-color: var(--green-color);
-                        color: var(--white-color);
-                        font-weight: bold;
                     }
                 }
             }
@@ -102,6 +102,37 @@
             -webkit-box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
             -moz-box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
             
+        }
+
+        .my_account {
+            button {
+               width: 80%;
+               height: 4vh;
+               margin: 7px auto 7px;
+               font-size: 17px;
+               background-color: var(--green-color);
+               color: var(--white-color); 
+
+               border-radius: 7px 7px 7px 7px;
+               -webkit-border-radius: 7px 7px 7px 7px;
+               -moz-border-radius: 7px 7px 7px 7px;
+
+            }
+
+            hr {
+                border: 1px solid black;
+            }
+
+            li {
+                display: flex;
+                align-items: center;
+
+                img {
+                    padding-right: 5px;
+                    
+                }
+            }
+
         }
 
 
