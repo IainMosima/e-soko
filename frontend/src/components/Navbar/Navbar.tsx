@@ -12,7 +12,7 @@ const Navbar = () => {
     const [query, setQuery] = useState('');
     const [debouncedQuery] = useDebounce(query, 500);
     const [searchResults, setSearchResults] = useState<Product[]>();
-    const [toggle, setToggle] = useState(false);
+    const [menuToggle, setMenuToggle] = useState(false);
     const [categoryToggle, setcategoryToggle] = useState(false);
     const [accountToggle, setAccountToggle] = useState(false);
     const categories = ['Cereals', 'Vegetables', 'Fruits', 'Herbs'];
@@ -125,7 +125,8 @@ const Navbar = () => {
                         >   
                             <ul>
                                 <button>Sign In</button>
-                                <hr />                                {myAccount.map((item, index) => (
+                                <hr />
+                                {myAccount.map((item, index) => (
                                     <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
                                 ))}
                             </ul>
@@ -135,7 +136,41 @@ const Navbar = () => {
 
             </div>
             
-            <img src={Images.menuIcon} alt='menu-down' className="menu-icon"/>
+
+            <div className="app__menu">
+                <img src={Images.menuIcon} alt='menu-down' className="menu-icon" onClick={()=>setMenuToggle(true)}/>
+                {menuToggle &&
+                    <motion.div
+                        whileInView={{x: [300, 0]}}
+                        transition={{ duration: 0.7, ease: 'easeOut'}}
+                        className="menu-body"
+                    >
+                        <img src={Images.closeIcon} alt='closeIcon' className="close-icon" onClick={()=>setMenuToggle(false)}/>
+                        
+                        
+                        <div>
+                            <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
+                            <h4>Categories</h4>
+                            <img src={Images.dropDownIcon} alt='drop-down'/>
+                        </div>
+
+                        <div>
+                            <img src={Images.packageIcon} alt='package-icon' className='icon'/>
+                            <h4>Packages </h4>
+                            <img src={Images.dropDownIcon} alt='drop-down'/>
+                        </div>
+
+                        <div>
+                            <img src={Images.accountIcon} alt='account-icon' className='icon'/>
+                            <h4>My Account </h4>
+                            <img src={Images.dropDownIcon} alt='drop-icon'/>
+                        </div>
+                        
+
+                    </motion.div>
+                }
+
+            </div>
             
 
         </nav>

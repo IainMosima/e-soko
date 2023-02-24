@@ -6,6 +6,7 @@ import categoryIcon from "../assets/category.png";
 import menuIcon from "../assets/menu-icon.png";
 import profileDefault from "../assets/profileDefault.png";
 import orderIcon from "../assets/orderIcon.png";
+import closeIcon from "../assets/close.png";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -16,5 +17,6 @@ export default {
     categoryIcon,
     menuIcon,
     profileDefault,
-    orderIcon
+    orderIcon,
+    closeIcon,
 }
