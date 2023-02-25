@@ -109,7 +109,6 @@ const Navbar = () => {
                 <div>
                     <img src={Images.packageIcon} alt='package-icon' className='icon'/>
                     <h4>Packages </h4>
-                    <img src={Images.dropDownIcon} alt='drop-down'/>
                 </div>
 
                 <div onClick={()=>toggleHandler('myAccount')}>
@@ -147,23 +146,30 @@ const Navbar = () => {
                     >
                         <img src={Images.closeIcon} alt='closeIcon' className="close-icon" onClick={()=>setMenuToggle(false)}/>
                         
-                        
+                        <br/>
+                        <br/>
+                        <br/>
                         <div>
                             <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
                             <h4>Categories</h4>
-                            <img src={Images.dropDownIcon} alt='drop-down'/>
+                            <img className='drop-down'src={Images.dropDownIcon} alt='drop-down'/>
                         </div>
 
+                        <br/>
+                        <br/>
+
                         <div>
-                            <img src={Images.packageIcon} alt='package-icon' className='icon'/>
+                            <img src={Images.packageIcon} className='packageIcon' alt='package-icon' />
                             <h4>Packages </h4>
-                            <img src={Images.dropDownIcon} alt='drop-down'/>
                         </div>
+
+                        <br/>
+                        <br/>
 
                         <div>
                             <img src={Images.accountIcon} alt='account-icon' className='icon'/>
                             <h4>My Account </h4>
-                            <img src={Images.dropDownIcon} alt='drop-icon'/>
+                            <img className='drop-down'src={Images.dropDownIcon} alt='drop-icon'/>
                         </div>
                         
 
