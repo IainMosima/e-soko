@@ -69,8 +69,7 @@ const Navbar = () => {
         }
     }
 
-    console.log(resultAvailable)
-    
+        
     return ( 
         <nav className="app__navbar">
             <div className="app__navbar-logo">

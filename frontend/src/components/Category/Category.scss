@@ -1,0 +1,123 @@
+.app__card {
+    margin: 3rem auto;
+    width: 93rem;
+
+    .card-title{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        
+        
+
+        h4{
+            display: flex;
+            align-items: center;
+            margin: 0 0.4rem 0 0.4rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        h3 {
+            margin: 0 0.4rem 0 0.4rem;
+        }
+
+    
+        div{
+            border-radius: 94px 94px 94px 94px;
+            background: var(--gray-color);
+            width: 100%;
+            height: 1vh;
+
+            &:nth-child(1) {
+                flex-basis: 3rem;
+            }
+
+            &:nth-child(3) {
+                flex-basis: 75rem;
+            }
+
+            &:nth-child(5) {
+                flex-basis: 3rem;
+            }
+
+            
+            @media screen and (max-width: 768px) {
+                &:nth-child(1) {
+                    flex-basis: 1.7rem;
+                }
+    
+                &:nth-child(3) {
+                    flex-basis: 15rem;
+                }
+    
+                &:nth-child(5) {
+                    flex-basis: 1.7rem;
+                }
+            }
+        }
+
+        
+    }
+
+    .card-body {
+        display: grid;
+        grid-template-columns: repeat(6, auto);
+
+        .card {
+            margin: 3rem 2rem 3rem 1rem;
+            border: 2px solid var(--lightGray-color);
+            border-radius: 7px;
+            display: inline-grid;
+            grid-template-areas: 
+            'image image image'
+            'image image image'
+            'name name name'
+            'price price price'
+            'kg add cart'
+            ;
+
+            .product-img{
+                grid-area: image;
+                margin: auto;
+            }
+
+            .name {
+                grid-area: name;
+            }
+
+            .price {
+                grid-area: price;
+            }
+
+            .quantity {
+                grid-area: kg;
+            }
+
+            .add {
+                grid-area: add;
+                justify-self: center;
+                place-self: end;
+            }
+
+            .cart {
+                grid-area: cart;
+                place-self: start;
+                justify-self: center;
+            }
+            
+
+            
+
+        }
+                
+    }
+    
+    @media screen and (max-width: 768px) {
+        width: 30rem;
+
+    }
+    
+
+
+}

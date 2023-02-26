@@ -3,12 +3,12 @@
 :root {
   --font-base: "DM Sans", sans-serif;
 
-  --primary-color: #FFEFCD;
+  --primary-color: #E09132;
   --secondary-color: #313bac;
-  --green-color: #424530;
+  --green-color: #454230;
   --black-color: #030303;
-  --lightGray-color: #e4e4e4;
-  --gray-color: #6b7688;
+  --lightGray-color: #faf4f4;
+  --gray-color: #CDCEC9;
   --brown-color: #46364a;
   --white-color: #ffffff;
 }
@@ -20,6 +20,3 @@
   scroll-behavior: smooth;
 }
 
-body {
-  background-color: #FFEFCD;
-}

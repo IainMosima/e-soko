@@ -12,12 +12,12 @@
         width: 15rem;
                 
         &:focus {
-            outline: var(--green-color);
+            outline: #A58E74;
             border: 2px solid var(--green-color);
 
         }
         &::placeholder {
-            color: var(--gray-color);
+            color: var(--black-color);
         }
 
         
@@ -50,7 +50,7 @@
         padding: 1rem;
         font-size: 1em;
         font-weight: 800;
-        color: var(--primary-color);
+        color: var(--white-color);
         -webkit-border-radius: 0px 40px 40px 0px;
         -moz-border-radius: 0px 40px 40px 0px;
         border-radius: 0px 40px 40px 0px;
