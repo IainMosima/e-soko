@@ -11,11 +11,12 @@ import { Product } from "../../models/product";
 const Navbar = () => {
     const [query, setQuery] = useState('');
     const [debouncedQuery] = useDebounce(query, 500);
-    const [searchResults, setSearchResults] = useState<Product[]>();
+    const [searchResults, setSearchResults] = useState<Product[]>([]);
     const [menuToggle, setMenuToggle] = useState(false);
     const [categoryToggle, setcategoryToggle] = useState(false);
     const [accountToggle, setAccountToggle] = useState(false);
     const categories = ['Cereals', 'Vegetables', 'Fruits', 'Herbs'];
+    const resultAvailable = searchResults.length > 0 ? true: false; 
     const myAccount = [
         {
             img: Images.profileDefault,
@@ -68,6 +69,7 @@ const Navbar = () => {
         }
     }
 
+    console.log(resultAvailable)
     
     return ( 
         <nav className="app__navbar">
@@ -83,7 +85,21 @@ const Navbar = () => {
                         throw new Error("Function not implemented.");
                     } }
                     />
+
+                                
+                {resultAvailable &&
+                    <div className='search-results'>                       
+                    <ul>
+                        {searchResults.map((item, index) =>(
+                                <li key={index}>{item.productName}</li>
+                            ))}
+                        
+                    </ul>
+                </div>
+                }
+                
             </div>
+
                 
             <div className="app__navbar-links">
                 <div onClick={()=>toggleHandler('categories')}>
@@ -149,6 +165,7 @@ const Navbar = () => {
                         <br/>
                         <br/>
                         <br/>
+                        
                         <div>
                             <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
                             <h4>Categories</h4>
@@ -156,16 +173,14 @@ const Navbar = () => {
                         </div>
 
                         <br/>
-                        <br/>
-
+                        
                         <div>
                             <img src={Images.packageIcon} className='packageIcon' alt='package-icon' />
                             <h4>Packages </h4>
                         </div>
 
                         <br/>
-                        <br/>
-
+                        
                         <div>
                             <img src={Images.accountIcon} alt='account-icon' className='icon'/>
                             <h4>My Account </h4>

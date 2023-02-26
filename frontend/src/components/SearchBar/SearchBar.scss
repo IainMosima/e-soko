@@ -10,7 +10,7 @@
         padding-left: 1rem;
         height: 5vh;
         width: 15rem;
-        
+                
         &:focus {
             outline: var(--green-color);
             border: 2px solid var(--green-color);
@@ -20,6 +20,7 @@
             color: var(--gray-color);
         }
 
+        
         @media (min-width: 1025px) and (max-width: 2000px){
             width: 27rem;
             height: 4.3vh;
@@ -28,11 +29,13 @@
         }
 
         @media screen and (max-width: 768px) {
-            width: 12rem;
+            width: 13rem;
             height: 3.5vh;
             padding-left: 0.8rem;
             font-size: 14px;
         }
+
+
 
 
     }
@@ -63,11 +66,13 @@
 
         
         @media screen and (max-width: 768px) {
-            width: 6rem;
+            width: 7rem;
             height: 3.5vh;
             padding: 0;
             font-size: 14px;
 
         }
+
+        
     }
 }
