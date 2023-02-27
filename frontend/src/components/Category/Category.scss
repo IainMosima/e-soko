@@ -63,58 +63,79 @@
     .card-body {
         display: grid;
         grid-template-columns: repeat(6, auto);
+        align-items: center;
+        gap: 5px;
 
+        &:nth-child(1){
+            display: none;
+        }
+
+        @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(3, auto);
+        grid-template-rows: repeat(2, auto);
+
+        }
+        
         .card {
-            margin: 3rem 2rem 3rem 1rem;
-            border: 2px solid var(--lightGray-color);
+            border: 4px solid var(--lightGray-color);
             border-radius: 7px;
             display: inline-grid;
+            padding: 0.6rem;
+            cursor: pointer;
             grid-template-areas: 
             'image image image'
             'image image image'
             'name name name'
             'price price price'
-            'kg add cart'
+            'kg add add'
             ;
-
+         
             .product-img{
                 grid-area: image;
-                margin: auto;
+                margin: 1rem auto;
             }
 
             .name {
                 grid-area: name;
+                font-weight: 500;
+                font-size: 1.2rem;
             }
 
             .price {
                 grid-area: price;
+                font-weight: 800;
+                font-size: 1.3rem;
             }
 
             .quantity {
                 grid-area: kg;
+                font-weight: 500;
+                font-size: 1.2rem;
             }
 
             .add {
                 grid-area: add;
-                justify-self: center;
-                place-self: end;
-            }
-
-            .cart {
-                grid-area: cart;
-                place-self: start;
-                justify-self: center;
+                justify-self: end;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                
             }
             
-
-            
+            @media screen and (max-width: 768px) {
+                grid-template-columns: repeat(3, auto);
+            }
 
         }
-                
+
+        
+
     }
     
     @media screen and (max-width: 768px) {
         width: 30rem;
+
+        
 
     }
     

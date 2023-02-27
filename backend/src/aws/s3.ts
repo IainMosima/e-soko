@@ -8,7 +8,7 @@ const s3 = new AWS.S3();
 export async function uploadFile(file: Express.Multer.File, bucketName: string) {
     // resizing the image before uploading to s3
     const productImg = await sharp(file.path)
-        .resize({width: 400, height: 400, fit: 'inside'})
+        .resize({width: 130, height: 130, fit: 'inside'})
         .toBuffer();
 
     const uploadParams = {

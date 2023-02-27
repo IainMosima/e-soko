@@ -17,6 +17,7 @@ interface CategoryProps {
 
 
 const Category = ({ categoryName, query, products } : CategoryProps) => {
+       
     return ( 
         <div className="app__card">
             <div className="card-title">
@@ -28,20 +29,25 @@ const Category = ({ categoryName, query, products } : CategoryProps) => {
             </div>
             <hr/>
 
+            <br />
+
             <div className="card-body">
                { products.map((item, index) => (
                     <div key={index} className="card">
                         <img className='product-img' src={Images.maizeIcon} alt={item.productName}/>
                         <p className='name'>{item.productName}</p>
-                        <p className='price'>Ksh. 150</p>
+                        <p className='price'>Ksh. {item.price}</p>
                         <p className='quantity'>per kg</p>
-                        <img src={Images.addIcon}  className='add' alt='add'/>
-                        <img src={Images.cartIcon}  className='cart' alt='add'/>
+                        <div className='add'>
+                            <img src={Images.addIcon}  alt='add'/>
+                            <img src={Images.cartIcon}  alt='add'/>
+                        </div>
 
                     </div>
                 ))}
             </div>
-            
+
+            <br />            
             <hr/>
         </div>
      );

@@ -9,6 +9,9 @@ const upload = multer({ dest: "uploads/" })
 // fetching all products
 router.get('/', ProductsController.getProducts);
 
+// fetching based on category
+router.get('/category', )
+
 // creating a new product
 router.post('/', upload.single('productImg'), ProductsController.createProduct);
 
