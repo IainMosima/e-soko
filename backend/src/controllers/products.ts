@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import ProductModel from "../models/product";
+import CategoryModel from "../models/category";
 import * as s3API from "../aws/s3";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
@@ -21,6 +22,32 @@ export const filterProducts: RequestHandler = async (req, res, next) => {
     }
 }
 
+// getting category data
+export const getCategory: RequestHandler = async (req, res, next) => {
+    const category = req.query.category as string;
+    const records = req.query.records as string;
+
+    try {
+        let products;
+        if (records){
+            const pipeline = [
+                { $match: { categoryName: category } },
+                { $sample: { size: parseInt(records) } }
+            ];
+    
+            products = await ProductModel.aggregate(pipeline);
+        } else {
+            products = await ProductModel.find({ categoryName: category });
+        }
+        res.status(200).json(products);
+        
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+
 // fetch all products available in the db
 export const getProducts: RequestHandler = async (req, res, next) => {
     try {
@@ -41,6 +68,7 @@ export const getImage: RequestHandler = async (req, res, next) => {
         next(error);
     }    
 }
+
 
 
 // creating a new product
@@ -180,6 +208,38 @@ export const deleteProduct: RequestHandler = async (req, res, next) => {
         await product.remove();
 
         res.sendStatus(204);
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+// updating categories
+interface UpdateCategoryParam {
+    categoryId: string
+}
+
+interface UpdateCategoryBody {
+    categoryName?: string
+}
+
+export const updateCategories: RequestHandler<UpdateCategoryParam, unknown, UpdateCategoryBody, unknown> = async (req, res, next) => {
+    const categoryId = req.params.categoryId;
+    const categoryName = req.body.categoryName;
+
+    try {
+        if(!mongoose.isValidObjectId(categoryId)){
+            throw createHttpError(400, "Categories must have a valid id");
+        }
+
+        const categories = await CategoryModel.findById(categoryId).exec();
+
+        if (!categories) {
+            throw createHttpError(404, "Categories not found");
+        }
+
+        console.log(categories);
+
 
     } catch (error) {
         next(error);

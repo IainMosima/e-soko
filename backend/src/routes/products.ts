@@ -9,14 +9,14 @@ const upload = multer({ dest: "uploads/" })
 // fetching all products
 router.get('/', ProductsController.getProducts);
 
-// fetching based on category
-router.get('/category', )
+// fetching specified category
+router.get('/category', ProductsController.getCategory);
 
 // creating a new product
 router.post('/', upload.single('productImg'), ProductsController.createProduct);
 
 // fetching an image
-router.get('/:key', ProductsController.getImage);
+router.get('/image/:key', ProductsController.getImage);
 
 // updating a product
 router.patch('/:productId', upload.single('productImg'), ProductsController.updateProduct);

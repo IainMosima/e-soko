@@ -1,5 +1,6 @@
 import { Images } from "../../constants";
 import { Product } from "../../models/product";
+import { imageStreamer } from "../../network/products";
 import "./Category.scss";
 
 interface data {
@@ -28,13 +29,12 @@ const Category = ({ categoryName, query, products } : CategoryProps) => {
                 <div></div>
             </div>
             <hr/>
-
             <br />
 
             <div className="card-body">
                { products.map((item, index) => (
                     <div key={index} className="card">
-                        <img className='product-img' src={Images.maizeIcon} alt={item.productName}/>
+                        <img className='product-img' src={imageStreamer('9e4712ad412990686043ef6a34a8fa9f')} alt={item.productName}/>
                         <p className='name'>{item.productName}</p>
                         <p className='price'>Ksh. {item.price}</p>
                         <p className='quantity'>per kg</p>

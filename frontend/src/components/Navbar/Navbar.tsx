@@ -31,7 +31,7 @@ const Navbar = () => {
 
     useEffect(() => {   
         async function perfomSearch () {
-            const results = await ProductsApi.queryProducts(debouncedQuery);
+            const results = await ProductsApi.searchFunction(debouncedQuery);
             setSearchResults(results);
         }
 

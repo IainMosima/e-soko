@@ -65,7 +65,7 @@ export const createPackage: RequestHandler<unknown, unknown, PackageBody, unknow
 
 
 // updating a package
-interface UpdatePackageParams {
+interface UpdatePackageParam {
     packageId: string
 }
 
@@ -81,7 +81,7 @@ interface UpdatePackageBody {
 }
 
 
-export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdatePackageBody, unknown> = async (req, res, next) => {
+export const updatePackage: RequestHandler<UpdatePackageParam, unknown, UpdatePackageBody, unknown> = async (req, res, next) => {
     const authenticatedUserId = req.session.userId;
     const packageId = req.params.packageId;
     const packageName = req.body.packageName;
@@ -135,3 +135,4 @@ export const updatePackage: RequestHandler<UpdatePackageParams, unknown, UpdateP
         next(err);
     }
 }
+
