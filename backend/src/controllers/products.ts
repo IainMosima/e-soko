@@ -23,7 +23,7 @@ export const filterProducts: RequestHandler = async (req, res, next) => {
 }
 
 // getting category data
-export const getCategory: RequestHandler = async (req, res, next) => {
+export const getCategoryProducts: RequestHandler = async (req, res, next) => {
     const category = req.query.category as string;
     const records = req.query.records as string;
 
@@ -215,8 +215,8 @@ export const deleteProduct: RequestHandler = async (req, res, next) => {
 }
 
 // fetching all categories
-export const getCategories: RequestHandler = async (req, res, next) => {
-    const id = req.params.id as string;
+export const getAvailableCategories: RequestHandler = async (req, res, next) => {
+    const id = env.CATEGORIESID;
     try {
         const response = await CategoryModel.findById(id).exec();
         if (response) {

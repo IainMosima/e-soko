@@ -1,7 +1,8 @@
-import { Navbar, Category } from "./components";
-import { useEffect } from "react";
-
+import { Navbar, Categories, Category } from "./components";
+import { useEffect, useState } from "react";
+import { fetchCategories, fetchCategory } from "./network/products";
 import './App.scss';
+import { Product } from "./models/product";
 
 const data = [
   {
@@ -37,20 +38,27 @@ const data = [
 ]
 
 function App() {
+  // const [availableCategories, setavailableCategories ] = useState();
+  const [cerealProducts, setCerealProducts] = useState<Product[]>();
   useEffect(() => {
-    
-  }, [])
-  
+    async function getProducts(category: string, records = 6) {
+      const response = await fetchCategory(category, records);
+      setCerealProducts(response);
+    }
+
+    getProducts('Cereals');
+
+}, [])
+
   return (
     <div>
       <Navbar />
-
       <Category
-        categoryName="Cereals"
-        query="cereals"
-        products={data}
-
-      />
+       categoryName="cereals"
+       query=""
+       products={cerealProducts}
+       />
+      
 
     </div>
   );

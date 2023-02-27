@@ -10,7 +10,7 @@ const upload = multer({ dest: "uploads/" })
 router.get('/', ProductsController.getProducts);
 
 // fetching specified category
-router.get('/category', ProductsController.getCategory);
+router.get('/category', ProductsController.getCategoryProducts);
 
 // creating a new product
 router.post('/', upload.single('productImg'), ProductsController.createProduct);
@@ -27,13 +27,13 @@ router.get('/query/:query', ProductsController.filterProducts);
 // deleting a product
 router.delete('/:productId', ProductsController.deleteProduct);
 
-// fetching all categories
-router.get('/categories/:id', ProductsController.getCategories);
+// fetching all available categories
+router.get('/categories', ProductsController.getAvailableCategories);
 
-// updating categories
+// updating available categories
 router.patch('/categories/:categoryId', ProductsController.updateCategories);
 
-// deleting a category
+// deleting available category
 router.delete('/categories/:categoryId', ProductsController.deleteCategory);
 
 export default router;

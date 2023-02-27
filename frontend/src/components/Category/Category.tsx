@@ -3,16 +3,10 @@ import { Product } from "../../models/product";
 import { imageStreamer } from "../../network/products";
 import "./Category.scss";
 
-interface data {
-    productName: string,
-    price: number,
-    image: string
-}
-
 interface CategoryProps {
     categoryName: string,
     query: string,
-    products: data[]
+    products: Product[] | undefined
 }
 
 
@@ -32,9 +26,9 @@ const Category = ({ categoryName, query, products } : CategoryProps) => {
             <br />
 
             <div className="card-body">
-               { products.map((item, index) => (
+               { products?.map((item, index) => (
                     <div key={index} className="card">
-                        <img className='product-img' src={imageStreamer('9e4712ad412990686043ef6a34a8fa9f')} alt={item.productName}/>
+                        <img className='product-img' src={imageStreamer(item.productImgKey)} alt={item.productName}/>
                         <p className='name'>{item.productName}</p>
                         <p className='price'>Ksh. {item.price}</p>
                         <p className='quantity'>per kg</p>
