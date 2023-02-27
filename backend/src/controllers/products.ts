@@ -214,16 +214,33 @@ export const deleteProduct: RequestHandler = async (req, res, next) => {
     }
 }
 
+// fetching all categories
+export const getCategories: RequestHandler = async (req, res, next) => {
+    const id = req.params.id as string;
+    try {
+        const response = await CategoryModel.findById(id).exec();
+        if (response) {
+            res.status(200).json(response.categories);
+        } else {
+            throw createHttpError(400, "Invalid categories id");
+        }
+        
+    } catch (error) {
+        next(error);
+    }
+
+}
+
 // updating categories
-interface UpdateCategoryParam {
+interface UpdateDeleteCategoryParam {
     categoryId: string
 }
 
-interface UpdateCategoryBody {
+interface UpdateDeleteCategoryBody {
     categoryName?: string
 }
 
-export const updateCategories: RequestHandler<UpdateCategoryParam, unknown, UpdateCategoryBody, unknown> = async (req, res, next) => {
+export const updateCategories: RequestHandler<UpdateDeleteCategoryParam, unknown, UpdateDeleteCategoryBody, unknown> = async (req, res, next) => {
     const categoryId = req.params.categoryId;
     const categoryName = req.body.categoryName;
 
@@ -238,11 +255,49 @@ export const updateCategories: RequestHandler<UpdateCategoryParam, unknown, Upda
             throw createHttpError(404, "Categories not found");
         }
 
-        console.log(categories);
+        categories.categories = [...categories.categories, categoryName]
 
+        const updateCategories = await categories.save();
+
+        res.status(200).send({
+            success: true,
+            message: "Categories updated successfully",
+            data: updateCategories
+        });
 
     } catch (error) {
         next(error);
     }
 }
 
+// deleting a category
+export const deleteCategory: RequestHandler<UpdateDeleteCategoryParam, unknown, UpdateDeleteCategoryBody, unknown> = async (req, res, next) => {
+    const categoryId = req.params.categoryId;
+    const categoryName = req.body.categoryName;
+
+
+    try {
+        if(!mongoose.isValidObjectId(categoryId)){
+            throw createHttpError(400, "Categories must have a valid id");
+        }
+
+        const categories = await CategoryModel.findById(categoryId).exec();
+
+        if (!categories) {
+            throw createHttpError(404, "Categories not found");
+        }
+
+        categories.categories = categories.categories.filter((item) => item !== categoryName);
+
+        const updateCategories = await categories.save();
+
+        res.status(200).send({
+            success: true,
+            message: "Category deleted successfully",
+            data: updateCategories
+        });
+
+    } catch (err) {
+        next(err);
+    }
+}

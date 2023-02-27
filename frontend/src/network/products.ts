@@ -13,6 +13,12 @@ export async function fetchProducts(): Promise<Product[]> {
     return response.json();
 }
 
+// fetching all categeries
+export async function fetchCategories() {
+    const response = await fetchData(`/api/v1/categories/${process.env.CATEGORIESID}`);
+    return response.json();
+}
+
 // fetching a category
 export async function fetchCategory(category: string, records: number): Promise<Product[]> {
     let response;
@@ -31,3 +37,4 @@ export function imageStreamer(key: string) {
     const imageUrl = `/api/v1/products/image/${key}`;
     return imageUrl;
 }
+
