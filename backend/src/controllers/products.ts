@@ -232,17 +232,15 @@ export const getAvailableCategories: RequestHandler = async (req, res, next) => 
 }
 
 // updating categories
-interface UpdateDeleteCategoryParam {
-    categoryId: string
-}
-
 interface UpdateDeleteCategoryBody {
     categoryName?: string
 }
 
-export const updateCategories: RequestHandler<UpdateDeleteCategoryParam, unknown, UpdateDeleteCategoryBody, unknown> = async (req, res, next) => {
-    const categoryId = req.params.categoryId;
+export const updateCategories: RequestHandler<unknown, unknown, UpdateDeleteCategoryBody, unknown> = async (req, res, next) => {
+    const categoryId = env.CATEGORIESID;
     const categoryName = req.body.categoryName;
+
+    console.log(categoryId)
 
     try {
         if(!mongoose.isValidObjectId(categoryId)){
@@ -271,8 +269,8 @@ export const updateCategories: RequestHandler<UpdateDeleteCategoryParam, unknown
 }
 
 // deleting a category
-export const deleteCategory: RequestHandler<UpdateDeleteCategoryParam, unknown, UpdateDeleteCategoryBody, unknown> = async (req, res, next) => {
-    const categoryId = req.params.categoryId;
+export const deleteCategory: RequestHandler<unknown, unknown, UpdateDeleteCategoryBody, unknown> = async (req, res, next) => {
+    const categoryId = env.CATEGORIESID;
     const categoryName = req.body.categoryName;
 
 

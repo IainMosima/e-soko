@@ -4,41 +4,8 @@ import { fetchCategories, fetchCategory } from "./network/products";
 import './App.scss';
 import { Product } from "./models/product";
 
-const data = [
-  {
-    productName: 'Maize',
-    price: 150,
-    image: './dummyImages/maize.png'
-  },
-  {
-    productName: 'Bean',
-    price: 150,
-    image: './dummyImages/maize.png'
-  },
-  {
-    productName: 'Rice',
-    price: 160,
-    image: './dummyImages/maize.png'
-  },
-  {
-    productName: 'Sorghum',
-    price: 150,
-    image: './dummyImages/maize.png'
-  },
-  {
-    productName: 'Green-grams',
-    price: 180,
-    image: './dummyImages/maize.png'
-  },
-  {
-    productName: 'Peas',
-    price:120,
-    image: './dummyImages/maize.png'
-  }
-]
-
 function App() {
-  // const [availableCategories, setavailableCategories ] = useState();
+  const [availableCategories, setAvailableCategories ] = useState();
   const [cerealProducts, setCerealProducts] = useState<Product[]>();
   useEffect(() => {
     async function getProducts(category: string, records = 6) {
@@ -46,19 +13,27 @@ function App() {
       setCerealProducts(response);
     }
 
-    getProducts('Cereals');
+    async function getAvailableCategories() {
+      const response = await fetchCategories();
+      setAvailableCategories(response);
+    }
+
+    getAvailableCategories();
+    
 
 }, [])
 
+  
+
   return (
     <div>
-      <Navbar />
-      <Category
-       categoryName="cereals"
-       query=""
-       products={cerealProducts}
-       />
-      
+      <Navbar 
+       categories={availableCategories}
+      />
+     
+     <Categories
+      categories={availableCategories}
+     />
 
     </div>
   );

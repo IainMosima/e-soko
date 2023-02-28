@@ -15,7 +15,7 @@ export async function fetchProducts(): Promise<Product[]> {
 
 // fetching all categeries
 export async function fetchCategories() {
-    const response = await fetchData(`/api/v1/products/categories`);
+    const response = await fetchData(`/api/v1/products/availableCategories`);
     return response.json();
 }
 

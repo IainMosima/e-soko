@@ -8,14 +8,17 @@ import * as ProductsApi from "../../network/products";
 import "./Navbar.scss";
 import { Product } from "../../models/product";
 
-const Navbar = () => {
+interface NavbarProps {
+    categories: [] | undefined
+}
+
+const Navbar = ({ categories }: NavbarProps) => {
     const [query, setQuery] = useState('');
     const [debouncedQuery] = useDebounce(query, 500);
     const [searchResults, setSearchResults] = useState<Product[]>([]);
     const [menuToggle, setMenuToggle] = useState(false);
     const [categoryToggle, setcategoryToggle] = useState(false);
     const [accountToggle, setAccountToggle] = useState(false);
-    const categories = ['Cereals', 'Vegetables', 'Fruits', 'Herbs'];
     const resultAvailable = searchResults.length > 0 ? true: false; 
     const myAccount = [
         {
@@ -113,7 +116,7 @@ const Navbar = () => {
                             className="more_info"
                         >
                             <ul>
-                                {categories.map((item, index) => (
+                                {categories?.map((item, index) => (
                                     <li key={index}>{item}</li>
                                 ))}
                             </ul>

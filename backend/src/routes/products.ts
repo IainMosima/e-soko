@@ -28,12 +28,12 @@ router.get('/query/:query', ProductsController.filterProducts);
 router.delete('/:productId', ProductsController.deleteProduct);
 
 // fetching all available categories
-router.get('/categories', ProductsController.getAvailableCategories);
+router.get('/availableCategories', ProductsController.getAvailableCategories);
 
-// updating available categories
-router.patch('/categories/:categoryId', ProductsController.updateCategories);
+// adding a new category
+router.post('/addCategory', ProductsController.updateCategories);
 
 // deleting available category
-router.delete('/categories/:categoryId', ProductsController.deleteCategory);
+router.post('/deleteCategory', ProductsController.deleteCategory);
 
 export default router;

@@ -16,10 +16,12 @@
             margin: 0 0.4rem 0 0.4rem;
             color: var(--primary-color);
             cursor: pointer;
+            text-align: center;
         }
 
         h3 {
             margin: 0 0.4rem 0 0.4rem;
+            text-align: center;
         }
 
     
@@ -34,7 +36,7 @@
             }
 
             &:nth-child(3) {
-                flex-basis: 75rem;
+                flex-basis: 74rem;
             }
 
             &:nth-child(5) {
@@ -48,7 +50,7 @@
                 }
     
                 &:nth-child(3) {
-                    flex-basis: 15rem;
+                    flex-basis: 14rem;
                 }
     
                 &:nth-child(5) {
@@ -62,7 +64,7 @@
 
     .card-body {
         display: grid;
-        grid-template-columns: repeat(6, auto);
+        grid-template-columns: repeat(6, 1fr);
         align-items: center;
         gap: 5px;
 
@@ -71,8 +73,7 @@
         }
 
         @media screen and (max-width: 768px) {
-        grid-template-columns: repeat(3, auto);
-        grid-template-rows: repeat(2, auto);
+            grid-template-columns: repeat(3, 1fr);
 
         }
         
@@ -81,6 +82,8 @@
             border-radius: 7px;
             display: inline-grid;
             padding: 0.6rem;
+            width: 15rem;
+            height: 20rem;
             cursor: pointer;
             grid-template-areas: 
             'image image image'
@@ -93,8 +96,8 @@
             .product-img{
                 grid-area: image;
                 margin: 1rem auto;
-                width: 8.5rem;
-                height: 8.5rem;
+                width: 9rem;
+                height: 9rem;
                 aspect-ratio: 1/1;
             }
 
@@ -126,7 +129,10 @@
             }
             
             @media screen and (max-width: 768px) {
-                grid-template-columns: repeat(3, auto);
+                width: 10rem;
+                height: 18rem;
+    
+                
             }
 
         }
