@@ -10,21 +10,9 @@
 			"item": [
 				{
 					"name": "Get all products",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"userId\":\"63e3fb144d1547e4dd514e71\",\n    \"packageName\":\"My fucking Package\",\n    \"items\": [{\n        \"_id\":\"63e3fc4c1da7e0415cc2e5b8\",\n        \"quantity\":\"3\"\n    },\n    {\n        \"_id\":\"63e3f6ac3e1014ec4b4536d8\",\n        \"quantity\":\"1\"\n    }\n    ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{port}}/api/v1/products",
 							"host": [
@@ -49,7 +37,7 @@
 							"formdata": [
 								{
 									"key": "productName",
-									"value": "Peas",
+									"value": "Garlic",
 									"contentType": "multipart/form-data",
 									"type": "default"
 								},
@@ -57,11 +45,11 @@
 									"key": "productImg",
 									"contentType": "multipart/form-data",
 									"type": "file",
-									"src": "/home/space/Desktop/e-soko-images/peas.png"
+									"src": "/home/space/Desktop/e-soko-images/garlic.png"
 								},
 								{
 									"key": "categoryName",
-									"value": "Cereals",
+									"value": "Vegetables",
 									"contentType": "multipart/form-data",
 									"type": "default"
 								},
@@ -73,7 +61,7 @@
 								},
 								{
 									"key": "price",
-									"value": "150",
+									"value": "100",
 									"type": "default"
 								}
 							],
@@ -107,18 +95,18 @@
 							"formdata": [
 								{
 									"key": "productName",
-									"value": "Beans",
+									"value": "Tomatoes",
 									"type": "default"
 								},
 								{
-									"key": "productImg",
-									"type": "file",
-									"src": "/home/space/Desktop/e-soko-images/beans.png"
+									"key": "price",
+									"value": "60",
+									"type": "default"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{port}}/api/v1/products/63e338f90ffb1e1e95577aa1?",
+							"raw": "{{port}}/api/v1/products/63e3f6ac3e1014ec4b4536d8",
 							"host": [
 								"{{port}}"
 							],
@@ -126,13 +114,7 @@
 								"api",
 								"v1",
 								"products",
-								"63e338f90ffb1e1e95577aa1"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null
-								}
+								"63e3f6ac3e1014ec4b4536d8"
 							]
 						}
 					},
@@ -153,6 +135,161 @@
 								"v1",
 								"products",
 								"63e36199c4511339d97f02d0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query a product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{port}}/api/v1/products/query/beans",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"query",
+								"beans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Getting a specified category data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{port}}/api/v1/products/category?category=Vegetables&records=2",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"category"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Vegetables"
+								},
+								{
+									"key": "records",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adding a new categories",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryName\": \"Vegetables\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{port}}/api/v1/products/addCategory",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"addCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryName\": \"Vegetables\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{port}}/api/v1/products/deleteCategory",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"deleteCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gettting all available categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{port}}/api/v1/products/availableCategories",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"availableCategories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{port}}/api/v1/products/categories?categoryName",
+							"host": [
+								"{{port}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "categoryName",
+									"value": null
+								}
 							]
 						}
 					},
@@ -402,7 +539,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\": \"63e3fb144d1547e4dd514e71\",\n    \"price\": \"2300\",\n    \"paymentType\": \"mpesa\"\n}",
+							"raw": "{\n    \"userId\": \"63e3fb144d1547e4dd514e71\",\n    \"price\": \"10\",\n    \"paymentType\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -410,7 +547,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{port}}/api/v1/orders/63e7e4b98e72e85050fb7038",
+							"raw": "{{port}}/api/v1/orders/63eb4f0b0f74709ccf963054",
 							"host": [
 								"{{port}}"
 							],
@@ -418,7 +555,7 @@
 								"api",
 								"v1",
 								"orders",
-								"63e7e4b98e72e85050fb7038"
+								"63eb4f0b0f74709ccf963054"
 							]
 						}
 					},

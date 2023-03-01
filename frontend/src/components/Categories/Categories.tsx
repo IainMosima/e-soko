@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Product } from "../../models/product";
 
 interface  CategoriesProps {
-    categories: [] | undefined
+    categories: string[] | undefined
 }
 
 interface CategoriesData {

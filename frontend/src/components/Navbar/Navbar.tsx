@@ -9,7 +9,7 @@ import "./Navbar.scss";
 import { Product } from "../../models/product";
 
 interface NavbarProps {
-    categories: [] | undefined
+    categories: string[] | undefined
 }
 
 const Navbar = ({ categories }: NavbarProps) => {
