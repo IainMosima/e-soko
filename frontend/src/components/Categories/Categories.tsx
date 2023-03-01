@@ -2,6 +2,7 @@ import Category from "../Category/Category";
 import { fetchCategory } from "../../network/products";
 import { useEffect, useState } from "react";
 import { Product } from "../../models/product";
+import "./Categories.scss";
 
 interface  CategoriesProps {
     categories: string[] | undefined
@@ -41,7 +42,7 @@ const Categories = ({ categories }: CategoriesProps) => {
     
     
     return (
-        <>
+        <div className='app__category'>
             {categoriesData?.map((item, index) => (
                 <div key={index}>
                     <Category
@@ -53,7 +54,7 @@ const Categories = ({ categories }: CategoriesProps) => {
             ))
 
             }        
-        </>
+        </div>
     );
 }
  
