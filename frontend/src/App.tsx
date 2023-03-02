@@ -1,6 +1,7 @@
-import { Navbar, Categories, Category } from "./components";
+import { Navbar, Categories, LoginSignUp } from "./components";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchCategories, fetchCategory } from "./network/products";
+import { fetchCategories } from "./network/products";
 import './App.scss';
 import { arrayShuffler } from "./utils/arrayShuffler";
 
@@ -21,16 +22,34 @@ function App() {
 
   
   return (
-    <div>
-      <Navbar 
-       categories={availableCategories}
-      />
-     
-     <Categories
-      categories={availableCategories}
-     />
+    <BrowserRouter>
+      <div>
+        <Navbar 
+        categories={availableCategories}
+        />
+      <Routes>
+        <Route
+         path='/'
+         element={
+          <Categories
+            categories={availableCategories}
+          />
+         }
+        />
 
+        <Route
+         path='/loginSignup'
+         element={
+          <LoginSignUp/>
+         }
+        />
+
+        
+      </Routes>
+      
     </div>
+    </BrowserRouter>
+    
   );
 }
 

@@ -10,6 +10,9 @@ import closeIcon from "../assets/close.png";
 import nextIcon from "../assets/next.png";
 import addIcon from "../assets/add.png";
 import cartIcon from "../assets/cart.png";
+import passwordLockIcon from "../assets/password-lock.png";
+import emailIcon from "../assets/emial-icon.png";
+import phoneIcon from "../assets/phone-icon.png";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -25,5 +28,8 @@ export default {
     nextIcon,
     addIcon,
     cartIcon,
+    passwordLockIcon,
+    emailIcon,
+    phoneIcon,
 
 }

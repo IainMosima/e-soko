@@ -54,8 +54,8 @@ const Navbar = ({ categories }: NavbarProps) => {
 
     }
 
-    function toggleHandler(icon: string) {
-        switch (icon) {
+    function toggleHandler(option: string) {
+        switch (option) {
             case 'categories':
                 setcategoryToggle(!categoryToggle);
                 setAccountToggle(false);
@@ -76,8 +76,10 @@ const Navbar = ({ categories }: NavbarProps) => {
     return ( 
         <nav className="app__navbar">
             <div className="app__navbar-logo">
-                <img src={Images.logo} alt="logo"/>
-                <h3>E-Soko</h3>
+                <a href="/">
+                    <img src={Images.logo} alt="logo"/>
+                    <h3>E-Soko</h3>
+                </a>
             </div>
 
             <div className="app__searchBar">
@@ -141,7 +143,9 @@ const Navbar = ({ categories }: NavbarProps) => {
                             className="more_info my_account"
                         >   
                             <ul>
-                                <button>Sign In</button>
+                                
+                                <button><a href="/loginSignup">Sign In</a></button>
+                                
                                 <hr />
                                 {myAccount.map((item, index) => (
                                     <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
