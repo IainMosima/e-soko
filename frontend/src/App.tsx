@@ -28,14 +28,14 @@ function App() {
         categories={availableCategories}
         />
       <Routes>
-        <Route
+        {/* <Route
          path='/'
          element={
           <Categories
             categories={availableCategories}
           />
          }
-        />
+        /> */}
 
         <Route
          path='/loginSignup'

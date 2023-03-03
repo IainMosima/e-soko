@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Images } from "../../constants";
-import { useForm } from "react-hook-form";
+import LoginForm from "./Login";
+import SignUpForm from "./Signup";
 
-import "./LoginSignUp.scss";
+import "./forms.scss";
 
 const LoginSignUp = () => {
     const [loginToggle, setLoginToggle] = useState(true);
@@ -40,51 +40,11 @@ const LoginSignUp = () => {
                 </div>
                 
                 {loginToggle &&
-                    <form>
-                        <div>
-                            <img src={Images.accountIcon} alt='profile-icon'/>
-                            <input type='text' placeholder="Username or Email"/>
-                        </div>
-
-                        
-                        <div>
-                            <img src={Images.passwordLockIcon} alt='profile-icon'/>
-                            <input type='password' placeholder="Password" />
-                        </div>
-
-                        <button>Log In</button>
-                    </form>
+                    <LoginForm/>
                 }
 
                 {signUpToggle &&
-                    <form>
-                        <div>
-                            <img src={Images.accountIcon} alt='profile-icon'/>
-                            <input type='text' placeholder="Username"/>
-                        </div>
-
-                        <div>
-                            <img src={Images.emailIcon} alt='profile-icon'/>
-                            <input type='email' placeholder="Email"/>
-                        </div>
-
-                        <div>
-                            <img src={Images.phoneIcon} alt='profile-icon'/>
-                            <input type='text' placeholder="Mpesa Number"/>
-                        </div>
-                        
-                        <div>
-                            <img src={Images.passwordLockIcon} alt='profile-icon'/>
-                            <input type='password' placeholder="Password" />
-                        </div>
-
-                        <div>
-                            <img src={Images.passwordLockIcon} alt='profile-icon'/>
-                            <input type='password' placeholder="Confirm Password" />
-                        </div>
-
-                        <button>Sign Up</button>
-                    </form>
+                    <SignUpForm/>
                 }
                 
             </div>

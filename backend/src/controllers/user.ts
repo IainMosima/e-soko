@@ -135,6 +135,7 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
         }
 
         const user = await UserModel.findOne({ username: username }).select("+password +phoneNumber").exec();
+        
 
         if(!user) {
             throw createHttpError(401, "Invalid username or password");
@@ -149,7 +150,12 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
         req.session.userId = user._id;
         req.session.phoneNumber = user.phoneNumber;
 
-        res.status(201).json(user);
+        res.status(201).json({
+            username: user.username,
+            location: user.location,
+            phoneNumber: user.phoneNumber,
+            profileImgKey: user.profileImgKey
+        });
 
     } catch(error) {
         next(error);
