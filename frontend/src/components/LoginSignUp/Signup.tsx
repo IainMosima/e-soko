@@ -3,11 +3,11 @@ import "./forms.scss";
 
 const SignUpForm = () => {
     return ( 
-        <div>
+        <div className="app__loginSignUp">
             <form>
-                <div className="app__loginSignUp" style={{marginTop: 0}}>
+                <div>
                     <img src={Images.accountIcon} alt='profile-icon'/>
-                    <input type='text' placeholder="Username"/>
+                    <input type='text' placeholder="Username or Email"/>
                 </div>
 
                 <div>

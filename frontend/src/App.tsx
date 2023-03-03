@@ -8,6 +8,8 @@ import { arrayShuffler } from "./utils/arrayShuffler";
 // add image optimization using imagekit
 function App() {
   const [availableCategories, setAvailableCategories ] = useState<string[]>();
+  const [menuToggle, setMenuToggle] = useState(false);
+
     useEffect(() => {
       async function getAvailableCategories() {
       const response = await fetchCategories();
@@ -26,21 +28,23 @@ function App() {
       <div>
         <Navbar 
         categories={availableCategories}
+        menuToogle={menuToggle}
+        setMenuToogle={setMenuToggle}
         />
       <Routes>
-        {/* <Route
+        <Route
          path='/'
          element={
           <Categories
             categories={availableCategories}
           />
          }
-        /> */}
+        />
 
         <Route
          path='/loginSignup'
          element={
-          <LoginSignUp/>
+          <LoginSignUp menuToggle={menuToggle}/>
          }
         />
 

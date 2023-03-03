@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Images } from "../../constants";
 import { useDebounce } from "use-debounce";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
 
 import SearchBar from "../SearchBar/SearchBar";
 import * as ProductsApi from "../../network/products";
@@ -9,14 +11,15 @@ import "./Navbar.scss";
 import { Product } from "../../models/product";
 
 interface NavbarProps {
-    categories: string[] | undefined
+    categories: string[] | undefined,
+    menuToogle: boolean
+    setMenuToogle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Navbar = ({ categories }: NavbarProps) => {
+const Navbar = ({ categories, menuToogle, setMenuToogle }: NavbarProps) => {
     const [query, setQuery] = useState('');
     const [debouncedQuery] = useDebounce(query, 500);
     const [searchResults, setSearchResults] = useState<Product[]>([]);
-    const [menuToggle, setMenuToggle] = useState(false);
     const [categoryToggle, setcategoryToggle] = useState(false);
     const [accountToggle, setAccountToggle] = useState(false);
     const resultAvailable = searchResults.length > 0 ? true: false; 
@@ -76,10 +79,10 @@ const Navbar = ({ categories }: NavbarProps) => {
     return ( 
         <nav className="app__navbar">
             <div className="app__navbar-logo">
-                <a href="/">
+                <Link to="/">
                     <img src={Images.logo} alt="logo"/>
                     <h3>E-Soko</h3>
-                </a>
+                </Link>
             </div>
 
             <div className="app__searchBar">
@@ -143,8 +146,8 @@ const Navbar = ({ categories }: NavbarProps) => {
                             className="more_info my_account"
                         >   
                             <ul>
+                                <button><Link to='/loginSignup'>Sign In</Link></button>
                                 
-                                <button><a href="/loginSignup">Sign In</a></button>
                                 
                                 <hr />
                                 {myAccount.map((item, index) => (
@@ -159,14 +162,14 @@ const Navbar = ({ categories }: NavbarProps) => {
             
 
             <div className="app__menu">
-                <img src={Images.menuIcon} alt='menu-down' className="menu-icon" onClick={()=>setMenuToggle(true)}/>
-                {menuToggle &&
+                <img src={Images.menuIcon} alt='menu-down' className="menu-icon" onClick={()=>setMenuToogle(true)}/>
+                {menuToogle &&
                     <motion.div
                         whileInView={{x: [300, 0]}}
                         transition={{ duration: 0.7, ease: 'easeOut'}}
                         className="menu-body"
                     >
-                        <img src={Images.closeIcon} alt='closeIcon' className="close-icon" onClick={()=>setMenuToggle(false)}/>
+                        <img src={Images.closeIcon} alt='closeIcon' className="close-icon" onClick={()=>setMenuToogle(false)}/>
                         
                         <br/>
                         <br/>

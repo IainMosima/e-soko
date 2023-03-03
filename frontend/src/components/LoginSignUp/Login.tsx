@@ -1,11 +1,13 @@
 import { Images } from "../../constants";
 import { loginCredentials } from "../../models/loginCredentials";
+import { Link, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as UserApi from "../../network/users";
 
 import "./forms.scss";
 
 const LoginForm = () => {
+
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
     const registerOptions = {
@@ -14,7 +16,7 @@ const LoginForm = () => {
     }
 
     return ( 
-        <div className="app__loginSignUp" style={{marginTop: 0}}>
+        <div className="app__loginSignUp">
             <form>
                 <div>
                     <img src={Images.accountIcon} alt='profile-icon'/>
