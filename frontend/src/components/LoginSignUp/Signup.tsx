@@ -7,7 +7,7 @@ const SignUpForm = () => {
             <form>
                 <div>
                     <img src={Images.accountIcon} alt='profile-icon'/>
-                    <input type='text' placeholder="Username or Email"/>
+                    <input type='text' placeholder="Username"/>
                 </div>
 
                 <div>

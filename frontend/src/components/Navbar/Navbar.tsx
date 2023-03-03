@@ -146,7 +146,7 @@ const Navbar = ({ categories, menuToogle, setMenuToogle }: NavbarProps) => {
                             className="more_info my_account"
                         >   
                             <ul>
-                                <button><Link to='/loginSignup'>Sign In</Link></button>
+                                <Link to='/loginSignup' className="link">Sign In</Link>
                                 
                                 
                                 <hr />
