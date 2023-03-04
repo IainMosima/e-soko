@@ -28,7 +28,7 @@ export const getProfileImage: RequestHandler = async (req, res, next) => {
     const key = req.params.key;
     try {
         const profileImage = await s3API.getImage(key, usersBucket);
-        res.status(200).send(profileImage);
+        profileImage.pipe(res);
     } catch (error) {
         next (error);
     }
@@ -122,29 +122,37 @@ export const logout: RequestHandler = (req, res, next) => {
 
 // logging in a user
 interface LoginBody {
-    username?: string,
+    usernameEmail?: string,
     password?: string
 }
 export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async (req, res, next) => {
-    const username = req.body.username;
+    const usernameEmail = req.body.usernameEmail;
     const password = req.body.password;
 
     try {
-        if (!username || !password) {
+        if (!usernameEmail || !password) {
             throw createHttpError(400, "Parameters Missing");
         }
 
-        const user = await UserModel.findOne({ username: username }).select("+password +phoneNumber").exec();
+        let user = await UserModel.findOne({ username: usernameEmail }).select("+password +phoneNumber").exec();
+
         
 
         if(!user) {
-            throw createHttpError(401, "Invalid username or password");
-        }
+            user = await UserModel.findOne({ email: usernameEmail }).select("+password +phoneNumber").exec();
+
+            if(!user) {
+                return res.status(401).json({ message: "Invalid credentials"})
+
+            }
+        } 
+
         // checking for password match
         const passwordMatch = await AuthSec.comparePassword(password, user.password);
         
         if (!passwordMatch) {
-            throw createHttpError(401, "Invalid Credentials");
+                return res.status(401).json({ message: "Invalid credentials"})
+
         }
 
         req.session.userId = user._id;

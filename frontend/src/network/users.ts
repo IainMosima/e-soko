@@ -8,7 +8,8 @@ export async function getLoggedInUser():Promise<User> {
     return response.json();
 }
 
-export async function login(credentials: loginCredentials) {
+// login function
+export async function login(credentials: loginCredentials): Promise<User> {
     const response = await fetchData('/api/v1/users/login', 
     { 
         method: 'POST',
@@ -19,4 +20,15 @@ export async function login(credentials: loginCredentials) {
     });
 
     return response.json();
+}
+
+// logout function
+export async function logout() {
+    await fetchData('/api/v1/users/logout', { method: 'POST' });
+}
+
+// fetching user profile image
+export function getUserProfileImage(key: string) {
+    const imageUrl = `/api/v1/users/image/${key}`;
+    return imageUrl;
 }

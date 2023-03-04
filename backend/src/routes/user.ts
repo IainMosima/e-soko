@@ -13,14 +13,13 @@ router.get('/', requireAuth, UsersController.getAuthenticatedUser);
 router.post('/signup', upload.single('profileImg'), UsersController.signup);
 
 // logging out a user
-// to fix!!!!!!!!
 router.post('/logout', UsersController.logout);
 
 // logging in a user
 router.post('/login', UsersController.login);
 
 // getting a users profile photo
-router.get('/:key', UsersController.getProfileImage);
+router.get('/image/:key', UsersController.getProfileImage);
 
 
 export default router;

@@ -1,32 +1,72 @@
 import { Images } from "../../constants";
+import React from "react";
 import { loginCredentials } from "../../models/loginCredentials";
-import { Link, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import * as UserApi from "../../network/users";
+import { UnauthorizedError } from "../../errors/http_errors";
+import { login } from "../../network/users";
 
 import "./forms.scss";
+import { User } from "../../models/user";
 
-const LoginForm = () => {
 
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+interface LoginProps {
+    errorText: string | null,
+    setErrorText: React.Dispatch<React.SetStateAction<string | null>>,
+
+}
+
+
+
+const LoginForm = ({ errorText, setErrorText } : LoginProps) => {
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<loginCredentials>();
+    
 
     const registerOptions = {
         usernameEmail: { required: 'Name or UserName is required' },
         password: { required: 'Password is required' },
     }
 
+    async function onSubmit(credentials: loginCredentials) {
+        try {
+            const user = await login(credentials);
+
+            if (user) {
+                console.log(user);
+            }
+
+        } catch (err) {
+            if (err instanceof UnauthorizedError) {
+                setErrorText('Invalid credentials, try again');
+            } else {
+                alert(err);
+                console.error(err);
+                
+            }
+        }
+    }
+
+    
     return ( 
         <div className="app__loginSignUp">
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                {errors.usernameEmail &&
+                    <p className="text-danger">Email or Username is required</p>
+                }
                 <div>
                     <img src={Images.accountIcon} alt='profile-icon'/>
-                    <input type='text' placeholder="Username or Email"/>
+                    <input type='text' placeholder="Username or Email"
+                     {...register('usernameEmail', registerOptions.usernameEmail)}/>
                 </div>
-
-                        
+                
+                
+                {errors.password &&
+                    <p className="text-danger">Password is required</p>
+                }        
                 <div>
                     <img src={Images.passwordLockIcon} alt='profile-icon'/>
-                    <input type='password' placeholder="Password" />
+                    <input type='password' placeholder="Password" 
+                     {...register('password', registerOptions.password)}
+                    />
                 </div>
 
                 <button>Log In</button>

@@ -171,7 +171,7 @@
                margin: 7px auto 7px;
                font-size: 17px;
                background-color: var(--green-color);
-               color: var(--white-color);
+               color: var(--primary-color);
                cursor: pointer;
                font-weight: 900; 
                border-radius: 7px 7px 7px 7px;
@@ -181,6 +181,9 @@
                text-align: center;
                text-transform: uppercase;
                padding-top: 0.6rem;
+
+               
+
 
 
             }
@@ -296,5 +299,11 @@
 
     }
 }
+
+.profile-icon {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
 
 

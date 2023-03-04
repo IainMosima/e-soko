@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import LoginForm from "./Login";
 import SignUpForm from "./Signup";
 
 import "./forms.scss";
 import { useLocation } from "react-router-dom";
+import { User } from "../../models/user";
 
 interface LoginSignUpProps {
     menuToggle: boolean
@@ -12,22 +13,23 @@ interface LoginSignUpProps {
 const LoginSignUp = ({ menuToggle }: LoginSignUpProps) => {
     const [loginToggle, setLoginToggle] = useState(true);
     const [signUpToggle, setSignUpToggle] = useState(false);
+    const [errorText, setErrorText] = useState<string | null>(null);
     const [showMessage, setShowMessage] = useState(true);
     
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    // const message = queryParams.get('message');
-    const message = 'Login in to add a product to a package';
+    const message = queryParams.get('message');
+    // const message = 'Login in to add a product to a package';
     
 
     useEffect(() => {
         const messageTimer = setTimeout(() => {
             setShowMessage(false);
-        }, 7000);
+        }, 3000);
         
       return () => clearTimeout(messageTimer);
 
-    }, [])
+    }, [errorText])
     
     
 
@@ -49,10 +51,15 @@ const LoginSignUp = ({ menuToggle }: LoginSignUpProps) => {
                 setLoginToggle(false);
         }
     }
+
+    
     return (
         <div className="app__loginSignUp login-only">
             {showMessage &&
                 <h3 className="message">{message}</h3>
+            }
+            {errorText &&
+                <h3 className="message">{errorText}</h3>
             }
             <div className="body">
                 <div className="navigators">
@@ -68,7 +75,10 @@ const LoginSignUp = ({ menuToggle }: LoginSignUpProps) => {
                 </div>
                 
                 {loginToggle &&
-                    <LoginForm/>
+                    <LoginForm
+                     errorText={errorText}
+                     setErrorText={setErrorText}
+                    />
                 }
 
                 {signUpToggle &&

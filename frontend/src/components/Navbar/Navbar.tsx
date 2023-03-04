@@ -7,16 +7,20 @@ import { Link } from "react-router-dom";
 
 import SearchBar from "../SearchBar/SearchBar";
 import * as ProductsApi from "../../network/products";
+import * as UserApi from "../../network/users";
 import "./Navbar.scss";
 import { Product } from "../../models/product";
+import { User } from "../../models/user";
 
 interface NavbarProps {
     categories: string[] | undefined,
     menuToogle: boolean
-    setMenuToogle: React.Dispatch<React.SetStateAction<boolean>>;
+    loggedInUser: User | null,
+    setMenuToogle: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
-const Navbar = ({ categories, menuToogle, setMenuToogle }: NavbarProps) => {
+const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenuToogle }: NavbarProps) => {
     const [query, setQuery] = useState('');
     const [debouncedQuery] = useDebounce(query, 500);
     const [searchResults, setSearchResults] = useState<Product[]>([]);
@@ -57,6 +61,16 @@ const Navbar = ({ categories, menuToogle, setMenuToogle }: NavbarProps) => {
 
     }
 
+    async function logout() {
+        try {
+            await UserApi.logout();
+            setLoggedInUser(null);
+        } catch (error) {
+            console.error(error);
+            
+        }
+    }
+
     function toggleHandler(option: string) {
         switch (option) {
             case 'categories':
@@ -75,7 +89,7 @@ const Navbar = ({ categories, menuToogle, setMenuToogle }: NavbarProps) => {
         }
     }
 
-        
+    
     return ( 
         <nav className="app__navbar">
             <div className="app__navbar-logo">
@@ -134,29 +148,63 @@ const Navbar = ({ categories, menuToogle, setMenuToogle }: NavbarProps) => {
                     <h4>Packages </h4>
                 </div>
 
-                <div onClick={()=>toggleHandler('myAccount')}>
-                    <img src={Images.accountIcon} alt='account-icon' className='icon'/>
-                    <h4>My Account </h4>
-                    <img src={Images.dropDownIcon} alt='drop-icon'/>
+                {!loggedInUser &&
+                    <div onClick={()=>toggleHandler('myAccount')}>
+                        <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
+                        <h4>My Account </h4>
+                        <img src={Images.dropDownIcon} alt='drop-icon'/>
 
-                    {accountToggle && 
-                        <motion.div
-                            whileInView={{y: [0, 10]}}
-                            transition={{ duration: 0.1, ease: 'easeOut' }}
-                            className="more_info my_account"
-                        >   
+                        {accountToggle && 
+                            <motion.div
+                                whileInView={{y: [0, 10]}}
+                                transition={{ duration: 0.1, ease: 'easeOut' }}
+                                className="more_info my_account"
+                            > 
                             <ul>
-                                <Link to='/loginSignup' className="link">Sign In</Link>
-                                
-                                
+                                <Link to='/loginSignup' className="link">Sign In</Link>                                 
+
                                 <hr />
                                 {myAccount.map((item, index) => (
-                                    <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
+                                <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
                                 ))}
-                            </ul>
-                        </motion.div>
-                    }
-                </div>
+                            </ul>                                
+                            </motion.div>
+                        }
+                    </div>
+                }
+
+                {loggedInUser &&
+                    <div onClick={()=>toggleHandler('myAccount')}>
+                        {loggedInUser.profileImgKey &&
+                            <img src={UserApi.getUserProfileImage(loggedInUser.profileImgKey)} alt='profile-pic' className='profile-icon'/>
+                        }
+
+                        {!loggedInUser.profileImgKey &&
+                            <img src={Images.accountIcon} alt='profile-icon' className='profile-icon'/>
+                        }
+                        <h4>{loggedInUser.username}</h4>
+                        <img src={Images.dropDownIcon} alt='drop-icon'/>
+
+                        {accountToggle && 
+                            <motion.div
+                                whileInView={{y: [0, 10]}}
+                                transition={{ duration: 0.1, ease: 'easeOut' }}
+                                className="more_info my_account"
+                            > 
+                            <ul>
+                               {myAccount.map((item, index) => (
+                                <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
+                                ))}
+
+                                <hr />                                           
+                                <button className="link" style={{paddingTop: 0}} onClick={logout}>Log Out</button>          
+                            </ul>                                
+                            </motion.div>
+                        }
+                    </div>
+                }
+
+                
 
             </div>
             
