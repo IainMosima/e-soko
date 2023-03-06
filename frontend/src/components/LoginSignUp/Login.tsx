@@ -4,6 +4,10 @@ import { loginCredentials } from "../../models/loginCredentials";
 import { useForm } from "react-hook-form";
 import { UnauthorizedError } from "../../errors/http_errors";
 import { login } from "../../network/users";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 import "./forms.scss";
 import { User } from "../../models/user";
@@ -12,14 +16,16 @@ import { User } from "../../models/user";
 interface LoginProps {
     errorText: string | null,
     setErrorText: React.Dispatch<React.SetStateAction<string | null>>,
+    setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>,
 
 }
 
 
 
-const LoginForm = ({ errorText, setErrorText } : LoginProps) => {
+const LoginForm = ({ errorText, setErrorText,  setLoggedInUser} : LoginProps) => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<loginCredentials>();
-    
+    const navigate = useNavigate();
+
 
     const registerOptions = {
         usernameEmail: { required: 'Name or UserName is required' },
@@ -31,7 +37,8 @@ const LoginForm = ({ errorText, setErrorText } : LoginProps) => {
             const user = await login(credentials);
 
             if (user) {
-                console.log(user);
+                setLoggedInUser(user);
+                navigate('/');
             }
 
         } catch (err) {

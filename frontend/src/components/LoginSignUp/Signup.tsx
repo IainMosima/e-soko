@@ -2,12 +2,18 @@ import { Images } from "../../constants";
 import "./forms.scss";
 
 const SignUpForm = () => {
+
     return ( 
         <div className="app__loginSignUp">
+
+            function onUsernamChange(event) {
+                
+            }
+
             <form>
-                <div>
+                <div className="input-warning">
                     <img src={Images.accountIcon} alt='profile-icon'/>
-                    <input type='text' placeholder="Username"/>
+                    <input type='text' placeholder="Username" />
                 </div>
 
                 <div>

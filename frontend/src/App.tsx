@@ -1,6 +1,6 @@
 import { Navbar, Categories, LoginSignUp } from "./components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useState } from "react";
 import { fetchCategories } from "./network/products";
 import { getLoggedInUser } from "./network/users";
 import './App.scss';
@@ -64,6 +64,7 @@ function App() {
          element={
           <LoginSignUp 
             menuToggle={menuToggle}
+            setLoggedInUser={setLoggedInUser}
           />
          }
         />

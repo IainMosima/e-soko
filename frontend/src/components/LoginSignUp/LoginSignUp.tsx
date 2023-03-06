@@ -7,10 +7,11 @@ import { useLocation } from "react-router-dom";
 import { User } from "../../models/user";
 
 interface LoginSignUpProps {
-    menuToggle: boolean
+    menuToggle: boolean,
+    setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
-const LoginSignUp = ({ menuToggle }: LoginSignUpProps) => {
+const LoginSignUp = ({ menuToggle, setLoggedInUser }: LoginSignUpProps) => {
     const [loginToggle, setLoginToggle] = useState(true);
     const [signUpToggle, setSignUpToggle] = useState(false);
     const [errorText, setErrorText] = useState<string | null>(null);
@@ -78,6 +79,7 @@ const LoginSignUp = ({ menuToggle }: LoginSignUpProps) => {
                     <LoginForm
                      errorText={errorText}
                      setErrorText={setErrorText}
+                     setLoggedInUser={setLoggedInUser}
                     />
                 }
 

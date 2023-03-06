@@ -90,6 +90,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
     }
 
     
+    
     return ( 
         <nav className="app__navbar">
             <div className="app__navbar-logo">
