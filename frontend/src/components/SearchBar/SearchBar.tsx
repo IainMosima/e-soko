@@ -1,7 +1,5 @@
 import React from "react";
 import "./SearchBar.scss";
-import { Product } from "../../models/product";
-
 
 interface SearchBarProps {
     query: string,

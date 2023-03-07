@@ -38,12 +38,12 @@ const LoginSignUp = ({ menuToggle, setLoggedInUser }: LoginSignUpProps) => {
     function toggleHandler(option: string) {
         switch (option) {
             case 'login':
-                setLoginToggle(!loginToggle);
+                setLoginToggle(true);
                 setSignUpToggle(false);
                 break;
 
             case 'signup':
-                setSignUpToggle(!signUpToggle);
+                setSignUpToggle(true);
                 setLoginToggle(false);
                 break;
             
@@ -77,14 +77,15 @@ const LoginSignUp = ({ menuToggle, setLoggedInUser }: LoginSignUpProps) => {
                 
                 {loginToggle &&
                     <LoginForm
-                     errorText={errorText}
                      setErrorText={setErrorText}
                      setLoggedInUser={setLoggedInUser}
                     />
                 }
 
                 {signUpToggle &&
-                    <SignUpForm/>
+                    <SignUpForm
+                     setLoggedInUser={setLoggedInUser}
+                    />
                 }
                 
             </div>

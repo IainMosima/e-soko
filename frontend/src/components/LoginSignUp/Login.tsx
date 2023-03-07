@@ -11,10 +11,10 @@ import { useNavigate } from "react-router-dom";
 
 import "./forms.scss";
 import { User } from "../../models/user";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 interface LoginProps {
-    errorText: string | null,
     setErrorText: React.Dispatch<React.SetStateAction<string | null>>,
     setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>,
 
@@ -22,7 +22,7 @@ interface LoginProps {
 
 
 
-const LoginForm = ({ errorText, setErrorText,  setLoggedInUser} : LoginProps) => {
+const LoginForm = ({  setErrorText,  setLoggedInUser } : LoginProps) => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<loginCredentials>();
     const navigate = useNavigate();
 
@@ -76,7 +76,14 @@ const LoginForm = ({ errorText, setErrorText,  setLoggedInUser} : LoginProps) =>
                     />
                 </div>
 
-                <button>Log In</button>
+                <button>
+                    {!isSubmitting &&
+                        <p>Log In</p>
+                    }
+                    {isSubmitting &&
+                        <CircularProgress color="inherit"/>
+                    }
+                </button>
             </form>
         </div>
      );

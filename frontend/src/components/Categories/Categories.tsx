@@ -1,8 +1,10 @@
 import Category from "../Category/Category";
 import { fetchCategory } from "../../network/products";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Product } from "../../models/product";
 import "./Categories.scss";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 interface  CategoriesProps {
     categories: string[] | undefined
@@ -16,9 +18,10 @@ interface CategoriesData {
 const Categories = ({ categories }: CategoriesProps) => {
     const [categoriesData, setCategoriesData] = useState<CategoriesData[]>();
 
+
     useEffect(() => {
         async function getAllCategoryProducts(records = 6) {
-            const result = [];
+            const result: SetStateAction<CategoriesData[] | undefined> = [];
             let products;
 
             if (categories) {
@@ -31,9 +34,7 @@ const Categories = ({ categories }: CategoriesProps) => {
                 }
             }
             
-            
-           setCategoriesData(result);
-
+            setCategoriesData(result);
         }
 
         getAllCategoryProducts();
@@ -43,6 +44,11 @@ const Categories = ({ categories }: CategoriesProps) => {
     
     return (
         <div className='app__category'>
+            {!categoriesData &&
+                <div className="spinner">
+                    <CircularProgress size="4rem" color="inherit"/>
+                </div>
+            }
             {categoriesData?.map((item, index) => (
                 <div key={index}>
                     <Category
@@ -52,7 +58,6 @@ const Categories = ({ categories }: CategoriesProps) => {
                      /> 
                 </div>
             ))
-
             }        
         </div>
     );

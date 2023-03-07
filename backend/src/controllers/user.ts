@@ -38,7 +38,7 @@ export const getProfileImage: RequestHandler = async (req, res, next) => {
 interface SignupBody {
     username?: string,
     email?: string,
-    phoneNumber?: number,
+    phoneNumber?: string,
     location?: string,
     password?: string,
     profileImg?: File

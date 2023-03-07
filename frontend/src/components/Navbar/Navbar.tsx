@@ -95,7 +95,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
         <nav className="app__navbar">
             <div className="app__navbar-logo">
                 <Link to="/">
-                    <img src={Images.logo} alt="logo"/>
+                    <img src={Images.logo} alt="logo" className="logo"/>
                     <h3>E-Soko</h3>
                 </Link>
             </div>

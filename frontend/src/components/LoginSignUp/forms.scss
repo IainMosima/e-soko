@@ -23,8 +23,7 @@
         -moz-box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.75);
 
         @media screen and (max-width: 768px) {
-            width: 30rem;
-            height: 30rem;    
+            width: 30rem;  
         }
 
         .navigators {
@@ -91,6 +90,11 @@
                     padding-left: 1rem;
                 }
 
+                p {
+                    border: 1px solid var(--gray-color);
+                    height: 2rem;
+                    text-align: center;
+                }
             }
 
             button {
@@ -128,5 +132,21 @@
             outline-color: var(--red-color);
         }
     }
-    
 }
+
+.input-ok {
+    input {
+        &:focus{
+            outline-color: var(--success-color);
+        }
+    }
+}
+
+.mobile-number {
+    border: 1px solid var(--gray-color);
+    border-right: none;
+    padding: 5px 7px;
+    height: 2rem;
+    font-size: 1.3rem;
+}
+
