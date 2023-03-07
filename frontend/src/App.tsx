@@ -1,4 +1,4 @@
-import { Navbar, Categories, LoginSignUp } from "./components";
+import { Navbar, Categories, LoginSignUp, SeeAll } from "./components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect,  useState } from "react";
 import { fetchCategories } from "./network/products";
@@ -67,6 +67,13 @@ function App() {
             setLoggedInUser={setLoggedInUser}
           />
          }
+        />
+
+        <Route
+          path='/seeAll'
+          element={
+            <SeeAll/>
+          }
         />
 
         

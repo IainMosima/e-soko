@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Images } from "../../constants";
 import { Product } from "../../models/product";
 import { imageStreamer } from "../../network/products";
@@ -13,13 +14,13 @@ interface CategoryProps {
 
 const Category = ({ categoryName, query, products } : CategoryProps) => {
        
-    return ( 
+    return (
         <div className="app__card">
             <div className="card-title">
                 <div></div>
                 <h3>{categoryName}</h3>
                 <div></div>
-                <h4>See all <img src={Images.nextIcon} alt='next'/> </h4>
+                <Link to={`/seeAll/${query}`} className='seeAll'><h4>See all <img src={Images.nextIcon} alt='next'/> </h4></Link>
                 <div></div>
             </div>
             <hr/>

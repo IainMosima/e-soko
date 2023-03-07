@@ -20,7 +20,7 @@ export async function fetchCategories() {
 }
 
 // fetching a category
-export async function fetchCategory(category: string, records: number): Promise<Product[]> {
+export async function fetchCategory(category: string, records?: number): Promise<Product[]> {
     let response;
 
     if (records){

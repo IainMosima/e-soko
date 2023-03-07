@@ -53,7 +53,7 @@ const Categories = ({ categories }: CategoriesProps) => {
                 <div key={index}>
                     <Category
                      categoryName={item.categoryName}
-                     query=""
+                     query={item.categoryName}
                      products={item.products}
                      /> 
                 </div>
