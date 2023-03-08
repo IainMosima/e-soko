@@ -11,7 +11,6 @@ import * as UserApi from "../../network/users";
 import "./Navbar.scss";
 import { Product } from "../../models/product";
 import { User } from "../../models/user";
-import { arrayShuffler } from "../../utils/arrayShuffler";
 
 interface NavbarProps {
     categories: string[] | undefined,
@@ -115,7 +114,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                     <div className='search-results'>                       
                     <ul>
                         {searchResults.map((item, index) =>(
-                            <Link to={`/search/${item.productName}`} key={index} style={{textDecoration: 'none', color: 'black'}}>
+                            <Link to={`/search/${item.productName}`} onClick={()=>setSearchResults([])} key={index} style={{textDecoration: 'none', color: 'black'}}>
                                 <li>{item.productName}</li>
                             </Link>
                             ))}
