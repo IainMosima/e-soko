@@ -72,7 +72,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
         }
     }
 
-    function toggleHandler(option: string) {
+    function toggleHandler(option?: string) {
         switch (option) {
             case 'categories':
                 setcategoryToggle(!categoryToggle);
@@ -84,17 +84,18 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                 setcategoryToggle(false);
                 break;
             
-            default:
+            case 'none':
                 setAccountToggle(false);
                 setcategoryToggle(false);
+                break;
         }
     }
 
     
     
     return ( 
-        <nav className="app__navbar">
-            <div className="app__navbar-logo">
+        <nav className="app__navbar" >
+            <div className="app__navbar-logo" onClick={()=>setMenuToogle(false)}>
                 <Link to="/">
                     <img src={Images.logo} alt="logo" className="logo"/>
                     <h3>E-Soko</h3>
@@ -163,7 +164,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
 
                 {!loggedInUser &&
                     <Link to={'/loginSignup'} style={{textDecoration: 'none', color: 'black'}}>
-                            <div onClick={()=>toggleHandler('myAccount')}>
+                        <div>
                             <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
                             <h4>My Account </h4>
                         </div>
@@ -237,7 +238,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                             >
                                 <ul>
                                     {categories?.map((item, index) => (
-                                        <Link to={`/seach/${item}`} key={index} className='categories-links'> 
+                                        <Link to={`/seach/${item}`} onClick={() => setMenuToogle(false)} key={index} className='categories-links'> 
                                             <li key={index}>{item}</li>
                                         </Link>
                                     ))}
@@ -250,7 +251,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                         <br/>
                         
                         <div>
-                            <div className="information">
+                            <div className="information" onClick={() => setMenuToogle(false)}>
                                 <img src={Images.packageIcon} className='packageIcon' alt='package-icon' />
                                 <h4>Packages </h4>
                             </div>
@@ -277,44 +278,48 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
 
                         {!loggedInUser &&
                             <div>
-                                <Link to={'/loginSignup'} style={{textDecoration: 'none', color: 'black'}}>
-                                    <div className="information" onClick={()=>toggleHandler('myAccount')}>
-                                        <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
-                                        <h4>My Account </h4>
-                                    </div>
-                                </Link>
+                                <div className="information" onClick={() => setMenuToogle(false)}>
+                                    <Link to={'/loginSignup'}  style={{textDecoration: 'none', color: 'black'}}>
+                                        <div className="information" onClick={()=>toggleHandler('myAccount')}>
+                                            <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
+                                            <h4>My Account </h4>
+                                        </div>
+                                    </Link>
+                                </div>
                             </div>
                             
                         }
 
                         {loggedInUser &&
-                            <div className="information" onClick={()=>toggleHandler('myAccount')}>
-                                {loggedInUser.profileImgKey &&
-                                    <img src={UserApi.getUserProfileImage(loggedInUser.profileImgKey)} alt='profile-pic' className='profile-icon'/>
-                                }
+                            <div className="information account-mobile">
+                                <div onClick={()=>toggleHandler('myAccount')}>
+                                    <div className="loggedInProfile">
+                                        {loggedInUser.profileImgKey &&
+                                            <img src={UserApi.getUserProfileImage(loggedInUser.profileImgKey)} alt='profile-pic' className='profile-icon icon' />
+                                        }
 
-                                {!loggedInUser.profileImgKey &&
-                                    <img src={Images.accountIcon} alt='profile-icon' className='profile-icon'/>
-                                }
-                                <h4>{loggedInUser.username}</h4>
-                                <img src={Images.dropDownIcon} alt='drop-icon'/>
-
-                                {accountToggle && 
-                                    <motion.div
-                                        whileInView={{y: [0, 10]}}
-                                        transition={{ duration: 0.1, ease: 'easeOut' }}
-                                        className="more_info my_account"
-                                    > 
-                                    <ul>
-                                    {myAccount.map((item, index) => (
-                                        <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
-                                        ))}
-
-                                        <hr />                                           
-                                        <button className="link" style={{paddingTop: 0}} onClick={logout}>Log Out</button>          
-                                    </ul>                                
-                                    </motion.div>
-                                }
+                                        {!loggedInUser.profileImgKey &&
+                                            <img src={Images.accountIcon} alt='profile-icon' className='profile-icon'/>
+                                        }
+                                        <h4>{loggedInUser.username}</h4>
+                                        <img src={Images.dropDownIcon} alt='drop-icon'/>
+                                    </div>
+                                    {accountToggle && 
+                                        <motion.div
+                                            whileInView={{y: [0, 10]}}
+                                            transition={{ duration: 0.1, ease: 'easeOut' }}
+                                            className="more-info-mobile"
+                                        > 
+                                        <ul>
+                                            {myAccount.map((item, index) => (
+                                                <li onClick={() => setMenuToogle(false)} key={index}><img src={item.img} alt='my-profile-icon' className="iconDefault"/> {item.name}</li>
+                                                ))}                                         
+                                                <button className="link" style={{paddingTop: 0}} onClick={logout}>Log Out</button>          
+                                        </ul>                                
+                                        </motion.div>
+                                    }
+                                    
+                                </div>
                             </div>
                         }
                         

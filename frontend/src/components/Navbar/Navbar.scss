@@ -203,6 +203,7 @@
                 img {
                     padding-right: 5px;
                     
+                    
                 }
             }
 
@@ -358,9 +359,47 @@
     }
 }
 
+
+
 .profile-icon {
     border-radius: 50%;
     aspect-ratio: 1/1;
 }
 
+.account-mobile {
+    margin-left: 2rem;
 
+    .loggedInProfile{
+        display: flex;
+        align-items: center;
+    }
+
+    .more-info-mobile {
+        margin-left: 1.2rem;
+        ul {
+            li {
+                list-style: none;
+                display: flex;
+                align-items: center;
+                
+            }
+
+            button {
+                margin-top: 1rem;
+                background-color: var(--green-color);
+                color: var(--primary-color);
+                width: 5rem;
+                height: 2rem;
+                outline: none;
+            }
+        }
+    }
+    .icon {
+        width: 50px;
+        height: 50px;
+    }
+    .iconDefault{
+        width: 30px;
+        height: 30px;
+    }
+}

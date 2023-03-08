@@ -48,6 +48,7 @@ function App() {
           setMenuToogle={setMenuToggle}
           loggedInUser={loggedInUser}
           setLoggedInUser={setLoggedInUser}
+          
         />
       <Routes>
         <Route
@@ -55,6 +56,7 @@ function App() {
          element={
           <Categories
             categories={availableCategories}
+            setMenuToogle={setMenuToggle}
           />
          }
         />

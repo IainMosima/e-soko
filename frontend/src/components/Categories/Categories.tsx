@@ -8,14 +8,16 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 interface  CategoriesProps {
     categories: string[] | undefined
+    setMenuToogle: React.Dispatch<React.SetStateAction<boolean>>,
+
 }
 
 interface CategoriesData {
     categoryName: string,
-    products: Product[]
+    products: Product[],
 }
 
-const Categories = ({ categories }: CategoriesProps) => {
+const Categories = ({ categories, setMenuToogle }: CategoriesProps) => {
     const [categoriesData, setCategoriesData] = useState<CategoriesData[]>();
 
 
@@ -43,7 +45,7 @@ const Categories = ({ categories }: CategoriesProps) => {
     
     
     return (
-        <div className='app__category'>
+        <div className='app__category' onClick={()=>setMenuToogle(false)}>
             {!categoriesData &&
                 <div className="spinner">
                     <CircularProgress size="4rem" color="inherit"/>
