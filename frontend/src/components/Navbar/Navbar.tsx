@@ -97,7 +97,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
             <div className="app__navbar-logo" onClick={()=>setMenuToogle(false)}>
                 <Link to="/">
                     <img src={Images.logo} alt="logo" className="logo"/>
-                    <h3>E-Soko</h3>
+                    <h3>Qijani</h3>
                 </Link>
             </div>
 
@@ -277,7 +277,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
 
                         {!loggedInUser &&
                             <div>
-                                <div className="information" onClick={() => setMenuToogle(false)}>
+                                <div onClick={() => setMenuToogle(false)}>
                                     <Link to={'/loginSignup'}  style={{textDecoration: 'none', color: 'black'}}>
                                         <div className="information" onClick={()=>toggleHandler('myAccount')}>
                                             <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
