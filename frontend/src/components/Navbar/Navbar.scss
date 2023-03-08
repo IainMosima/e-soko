@@ -33,7 +33,7 @@
                 padding-top: 0.5rem;
                 padding-left: 3rem;
                 font-size: 1rem;
-                border-radius: inherit;
+                border-radius: 10px;
 
                 &:hover {
                     background-color: var(--green-color);
@@ -77,10 +77,6 @@
 
     
     @media (min-width: 1025px) and (max-width: 2000px){
-        img {
-            width: 4rem;
-            height: 4rem;
-        }
     
         h3 {
             text-transform: uppercase;
@@ -92,11 +88,7 @@
     }
 
     @media screen and (max-width: 768px) {
-        img {
-            width: 4rem;
-            height: 4rem;
-        }
-
+        
         h3 {
             font-size: 16px;
         }
@@ -128,7 +120,7 @@
 
         .more_info {
             position: absolute;
-            top: 70px;
+            top: 50px;
             border: 1px solid black;
             width: 11rem;
             background-color: var(--white-color);
@@ -158,6 +150,12 @@
                         
                     }
                 }
+
+                .categories-links {
+                   width: inherit;
+                   text-decoration: none;
+                   color: black;
+                }
             }
 
             border-radius: 10px 10px 10px 10px;
@@ -172,7 +170,7 @@
 
         .my_account {
             .link {
-               width: 80%;
+               width: 10rem;
                height: 4vh;
                margin: 7px auto 7px;
                font-size: 17px;
@@ -269,6 +267,7 @@
         bottom: 0;
         right: 0;
         
+
                 
 
         padding: 1rem;
@@ -282,25 +281,78 @@
         -webkit-box-shadow: -7px -1px 2px -2px rgba(0,0,0,0.25);
         -moz-box-shadow: -7px -1px 2px -2px rgba(0,0,0,0.25);
 
+
+
         div{
-            display: flex;
-            align-items: center;
-            margin-left: 2rem;
+            .information{
+                display: flex;
+                align-items: center;
+                margin-left: 2rem;
+                
+
+                img:nth-child(1){
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    margin-right: 1rem;
+                }
             
 
-            img:nth-child(1){
-                width: 2.5rem;
-                height: 2.5rem;
-                margin-right: 1rem;
+                .drop-down{
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    margin-top: 0.2rem;
+                }
             }
-           
+            
 
-            .drop-down{
-                width: 1.2rem;
-                height: 1.2rem;
-                margin-top: 0.2rem;
+            .more_info {
+                width: 11rem;
+                background-color: var(--white-color);
+                margin-inline: auto;               
+    
+    
+                ul {
+                    transition: all 0.1s ease-in;
+                    transition-delay: 0ms;
+                    z-index: 3;
+                    width: inherit;
+                    display: flex;
+                    flex-direction: column;
+        
+                    li {
+                        list-style-type: none;
+                        padding: 15px 10px;
+                        font-size: large;
+                        border-radius: 10px 10px 10px 10px;
+                        -webkit-border-radius: 10px 10px 10px 10px;
+                        -moz-border-radius: 10px 10px 10px 10px;
+                        width: inherit;
+        
+                        &:hover{
+                            background-color: var(--green-color);
+                            color: var(--white-color);
+                            
+                            
+                        }
+                    }
+    
+                    .categories-links {
+                       width: inherit;
+                       text-decoration: none;
+                       color: black;
+                    }
+                }
+    
+                border-radius: 10px 10px 10px 10px;
+                -webkit-border-radius: 10px 10px 10px 10px;
+                -moz-border-radius: 10px 10px 10px 10px;
+    
+                // box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
+                // -webkit-box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
+                // -moz-box-shadow: 10px 10px 27px -1px rgba(0,0,0,0.75);
+              
+
             }
-
         }
 
     }

@@ -76,7 +76,7 @@ const LoginForm = ({  setErrorText,  setLoggedInUser } : LoginProps) => {
                     />
                 </div>
 
-                <button>
+                <button disabled={isSubmitting}>
                     {!isSubmitting &&
                         <p>Log In</p>
                     }

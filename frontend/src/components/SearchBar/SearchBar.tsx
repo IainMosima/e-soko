@@ -11,7 +11,7 @@ const SearchBar = ({ query, handleInputChange } : SearchBarProps) => {
         
     return ( 
         <div className="app__searchBar">
-            <input type='text' value={query} onChange={handleInputChange} placeholder='Search product or category'/>
+            <input type='text' value={query} onChange={handleInputChange} placeholder='Search product or category '/>
             <button>Search</button>
 
            

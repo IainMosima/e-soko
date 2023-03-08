@@ -70,7 +70,7 @@ function App() {
         />
 
         <Route
-          path='/seeAll'
+          path='/search'
           element={
             <SeeAll/>
           }

@@ -15,7 +15,12 @@ export const filterProducts: RequestHandler = async (req, res, next) => {
     const query = req.params.query;
 
     try {
-        const products = await ProductModel.find({ productName: new RegExp('^' +query, 'i') });
+        const products = await ProductModel.find({ 
+            $or: [
+                { productName: new RegExp('^' +query, 'i') },
+                { categoryName: new RegExp('^' +query, 'i') },
+            ]
+         });
         res.status(200).json(products);
     } catch (err) {
         next(err);

@@ -11,6 +11,7 @@ import * as UserApi from "../../network/users";
 import "./Navbar.scss";
 import { Product } from "../../models/product";
 import { User } from "../../models/user";
+import { arrayShuffler } from "../../utils/arrayShuffler";
 
 interface NavbarProps {
     categories: string[] | undefined,
@@ -32,10 +33,10 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
             img: Images.profileDefault,
             name: 'My Profile'
         },
-        {
-            img: Images.orderIcon,
-            name: 'Orders'
-        }
+        // {
+        //     img: Images.orderIcon,
+        //     name: 'Orders'
+        // }
         // will add inbox later on
     ]
 
@@ -113,7 +114,9 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                     <div className='search-results'>                       
                     <ul>
                         {searchResults.map((item, index) =>(
-                                <li key={index}>{item.productName}</li>
+                            <Link to={`/search/${item.productName}`} key={index} style={{textDecoration: 'none', color: 'black'}}>
+                                <li>{item.productName}</li>
+                            </Link>
                             ))}
                         
                     </ul>
@@ -137,7 +140,9 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                         >
                             <ul>
                                 {categories?.map((item, index) => (
-                                    <li key={index}>{item}</li>
+                                    <Link to={`/seach/${item}`} key={index} className='categories-links'> 
+                                        <li key={index}>{item}</li>
+                                    </Link>
                                 ))}
                             </ul>
                         </motion.div>
@@ -148,30 +153,22 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                     <img src={Images.packageIcon} alt='package-icon' className='icon'/>
                     <h4>Packages </h4>
                 </div>
+                
+                {loggedInUser &&
+                    <div>
+                    <img src={Images.orderIcon} alt='package-icon' className='icon'/>
+                    <h4>Orders </h4>
+                </div>
+                }
 
                 {!loggedInUser &&
-                    <div onClick={()=>toggleHandler('myAccount')}>
-                        <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
-                        <h4>My Account </h4>
-                        <img src={Images.dropDownIcon} alt='drop-icon'/>
-
-                        {accountToggle && 
-                            <motion.div
-                                whileInView={{y: [0, 10]}}
-                                transition={{ duration: 0.1, ease: 'easeOut' }}
-                                className="more_info my_account"
-                            > 
-                            <ul>
-                                <Link to='/loginSignup' className="link">Sign In</Link>                                 
-
-                                <hr />
-                                {myAccount.map((item, index) => (
-                                <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
-                                ))}
-                            </ul>                                
-                            </motion.div>
-                        }
-                    </div>
+                    <Link to={'/loginSignup'} style={{textDecoration: 'none', color: 'black'}}>
+                            <div onClick={()=>toggleHandler('myAccount')}>
+                            <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
+                            <h4>My Account </h4>
+                        </div>
+                    </Link>
+                    
                 }
 
                 {loggedInUser &&
@@ -224,26 +221,102 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                         <br/>
                         <br/>
                         
-                        <div>
-                            <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
-                            <h4>Categories</h4>
-                            <img className='drop-down'src={Images.dropDownIcon} alt='drop-down'/>
+                        <div onClick={()=>toggleHandler('categories')}>
+                            <div className="information">
+                                <img src={Images.categoryIcon} alt='category-icon' className='icon'/>
+                                <h4>Categories</h4>
+                                <img className='drop-down'src={Images.dropDownIcon} alt='drop-down'/>
+                            </div>
+                            
+
+                            {categoryToggle && 
+                            <motion.div
+                                whileInView={{y: [0, 10]}}
+                                transition={{ duration: 0.1, ease: 'easeOut' }}
+                                className="more_info"
+                            >
+                                <ul>
+                                    {categories?.map((item, index) => (
+                                        <Link to={`/seach/${item}`} key={index} className='categories-links'> 
+                                            <li key={index}>{item}</li>
+                                        </Link>
+                                    ))}
+                                </ul>
+                            </motion.div>
+                    }
                         </div>
 
                         <br/>
-                        
-                        <div>
-                            <img src={Images.packageIcon} className='packageIcon' alt='package-icon' />
-                            <h4>Packages </h4>
-                        </div>
-
                         <br/>
                         
                         <div>
-                            <img src={Images.accountIcon} alt='account-icon' className='icon'/>
-                            <h4>My Account </h4>
-                            <img className='drop-down'src={Images.dropDownIcon} alt='drop-icon'/>
+                            <div className="information">
+                                <img src={Images.packageIcon} className='packageIcon' alt='package-icon' />
+                                <h4>Packages </h4>
+                            </div>
+                            
                         </div>
+
+                        <br/>
+                        <br/>
+                        
+                        {loggedInUser &&
+                            <>
+                                <div>
+                                    <div className="information">
+                                        <img src={Images.orderIcon} alt='package-icon' className='icon'/>
+                                        <h4>Orders </h4>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                            </>
+                            
+                        }
+                        
+
+                        {!loggedInUser &&
+                            <div>
+                                <Link to={'/loginSignup'} style={{textDecoration: 'none', color: 'black'}}>
+                                    <div className="information" onClick={()=>toggleHandler('myAccount')}>
+                                        <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
+                                        <h4>My Account </h4>
+                                    </div>
+                                </Link>
+                            </div>
+                            
+                        }
+
+                        {loggedInUser &&
+                            <div className="information" onClick={()=>toggleHandler('myAccount')}>
+                                {loggedInUser.profileImgKey &&
+                                    <img src={UserApi.getUserProfileImage(loggedInUser.profileImgKey)} alt='profile-pic' className='profile-icon'/>
+                                }
+
+                                {!loggedInUser.profileImgKey &&
+                                    <img src={Images.accountIcon} alt='profile-icon' className='profile-icon'/>
+                                }
+                                <h4>{loggedInUser.username}</h4>
+                                <img src={Images.dropDownIcon} alt='drop-icon'/>
+
+                                {accountToggle && 
+                                    <motion.div
+                                        whileInView={{y: [0, 10]}}
+                                        transition={{ duration: 0.1, ease: 'easeOut' }}
+                                        className="more_info my_account"
+                                    > 
+                                    <ul>
+                                    {myAccount.map((item, index) => (
+                                        <li key={index}>{<img src={item.img} alt='my-profile-icon'/>} {item.name}</li>
+                                        ))}
+
+                                        <hr />                                           
+                                        <button className="link" style={{paddingTop: 0}} onClick={logout}>Log Out</button>          
+                                    </ul>                                
+                                    </motion.div>
+                                }
+                            </div>
+                        }
                         
 
                     </motion.div>
