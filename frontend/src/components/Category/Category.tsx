@@ -20,7 +20,7 @@ const Category = ({ categoryName, query, products } : CategoryProps) => {
                 <div></div>
                 <h3>{categoryName}</h3>
                 <div></div>
-                <Link to={`/seeAll/${query}`} className='seeAll'><h4>See all <img src={Images.nextIcon} alt='next'/> </h4></Link>
+                <a href={`/search/${query}`} className='seeAll'><h4>See all <img src={Images.nextIcon} alt='next'/> </h4></a>
                 <div></div>
             </div>
             <hr/>

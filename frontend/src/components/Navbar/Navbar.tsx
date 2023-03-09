@@ -114,9 +114,9 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                     <div className='search-results'>                       
                     <ul>
                         {searchResults.map((item, index) =>(
-                            <Link to={`/search/${item.productName}`} onClick={()=>setSearchResults([])} key={index} style={{textDecoration: 'none', color: 'black'}}>
+                            <a href={`/search/${item.productName}`} onClick={()=>setSearchResults([])} key={index} style={{textDecoration: 'none', color: 'black'}}>
                                 <li>{item.productName}</li>
-                            </Link>
+                            </a>
                             ))}
                         
                     </ul>
@@ -140,9 +140,9 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                         >
                             <ul>
                                 {categories?.map((item, index) => (
-                                    <Link to={`/seach/${item}`} key={index} className='categories-links'> 
+                                    <a href={`/search/${item}`} key={index} className='categories-links'> 
                                         <li key={index}>{item}</li>
-                                    </Link>
+                                    </a>
                                 ))}
                             </ul>
                         </motion.div>
@@ -237,9 +237,9 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                             >
                                 <ul>
                                     {categories?.map((item, index) => (
-                                        <Link to={`/seach/${item}`} onClick={() => setMenuToogle(false)} key={index} className='categories-links'> 
+                                        <a href={`/search/${item}`} onClick={() => setMenuToogle(false)} key={index} className='categories-links'> 
                                             <li key={index}>{item}</li>
-                                        </Link>
+                                        </a>
                                     ))}
                                 </ul>
                             </motion.div>
