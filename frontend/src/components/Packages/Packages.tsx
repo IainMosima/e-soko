@@ -1,9 +1,23 @@
+import { useNavigate } from "react-router-dom";
+import { User } from "../../models/user";
 import "./Packages.scss";
 
-const Packages = () => {
-    return ( <div>
+interface PackageProps {
+    loggedInUser: User | null,
+}
 
-    </div> );
+const Packages = ({ loggedInUser }: PackageProps) => {
+    const navigate = useNavigate();
+
+    if (!loggedInUser) {
+        navigate('/loginSignup/packages');
+    }
+
+    return ( 
+        <div>
+            
+        </div> 
+    );
 }
  
 export default Packages;

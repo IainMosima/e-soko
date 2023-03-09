@@ -3,3 +3,4 @@ export { default as Category } from "./Category/Category";
 export { default as Categories } from "./Categories/Categories";
 export { default as LoginSignUp  } from "./LoginSignUp/LoginSignUp";
 export { default as SeeAll } from "./SeeAll/SeeAll";
+export { default as Packages } from "./Packages/Packages";

@@ -1,4 +1,4 @@
-import { Navbar, Categories, LoginSignUp, SeeAll } from "./components";
+import { Navbar, Categories, LoginSignUp, SeeAll, Packages } from "./components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect,  useState } from "react";
 import { fetchCategories } from "./network/products";
@@ -62,11 +62,12 @@ function App() {
         />
 
         <Route
-         path='/loginSignup'
+         path='/loginSignup/:from'
          element={
           <LoginSignUp 
             menuToggle={menuToggle}
             setLoggedInUser={setLoggedInUser}
+            loggedInUser={loggedInUser}
           />
          }
         />
@@ -78,6 +79,14 @@ function App() {
           }
         />
 
+        <Route
+          path='/packages'
+          element={
+            <Packages
+             loggedInUser={loggedInUser}
+             />
+          }
+        />
         
       </Routes>
       

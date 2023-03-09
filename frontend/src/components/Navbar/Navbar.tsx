@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Images } from "../../constants";
 import { useDebounce } from "use-debounce";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 import SearchBar from "../SearchBar/SearchBar";
@@ -26,7 +26,10 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
     const [searchResults, setSearchResults] = useState<Product[]>([]);
     const [categoryToggle, setcategoryToggle] = useState(false);
     const [accountToggle, setAccountToggle] = useState(false);
-    const resultAvailable = searchResults.length > 0 ? true: false; 
+    const resultAvailable = searchResults.length > 0 ? true: false;
+    const navigate = useNavigate();
+
+    
     const myAccount = [
         {
             img: Images.profileDefault,
@@ -90,6 +93,16 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
         }
     }
 
+    function packageOnClickHandler(){
+        if(!loggedInUser){
+            setMenuToogle(false);
+            navigate('/loginSignup/packages');
+        } else {
+            setMenuToogle(false)
+            navigate('/packages');
+        }
+    }
+
     
     
     return ( 
@@ -149,7 +162,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                     }
                 </div>
 
-                <div>
+                <div onClick={() => packageOnClickHandler()}>
                     <img src={Images.packageIcon} alt='package-icon' className='icon'/>
                     <h4>Packages </h4>
                 </div>
@@ -162,7 +175,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                 }
 
                 {!loggedInUser &&
-                    <Link to={'/loginSignup'} style={{textDecoration: 'none', color: 'black'}}>
+                    <Link to={'/loginSignup/&'} style={{textDecoration: 'none', color: 'black'}}>
                         <div>
                             <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
                             <h4>My Account </h4>
@@ -250,7 +263,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                         <br/>
                         
                         <div>
-                            <div className="information" onClick={() => setMenuToogle(false)}>
+                            <div className="information" onClick={() => {packageOnClickHandler()}}>
                                 <img src={Images.packageIcon} className='packageIcon' alt='package-icon' />
                                 <h4>Packages </h4>
                             </div>
@@ -278,7 +291,7 @@ const Navbar = ({ categories, menuToogle, loggedInUser, setLoggedInUser, setMenu
                         {!loggedInUser &&
                             <div>
                                 <div onClick={() => setMenuToogle(false)}>
-                                    <Link to={'/loginSignup'}  style={{textDecoration: 'none', color: 'black'}}>
+                                    <Link to={'/loginSignup/&'}  style={{textDecoration: 'none', color: 'black'}}>
                                         <div className="information" onClick={()=>toggleHandler('myAccount')}>
                                             <img src={Images.accountIcon} alt='account-icon' className='profile-icon' />
                                             <h4>My Account </h4>

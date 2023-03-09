@@ -3,25 +3,38 @@ import LoginForm from "./Login";
 import SignUpForm from "./Signup";
 
 import "./forms.scss";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../models/user";
 
 interface LoginSignUpProps {
     menuToggle: boolean,
-    setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>
+    setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>,
+    loggedInUser: User | null
 }
 
-const LoginSignUp = ({ menuToggle, setLoggedInUser }: LoginSignUpProps) => {
+const LoginSignUp = ({ menuToggle, loggedInUser, setLoggedInUser }: LoginSignUpProps) => {
     const [loginToggle, setLoginToggle] = useState(true);
     const [signUpToggle, setSignUpToggle] = useState(false);
     const [errorText, setErrorText] = useState<string | null>(null);
     const [showMessage, setShowMessage] = useState(true);
+    let message;
     
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const message = queryParams.get('message');
-    // const message = 'Login in to add a product to a package';
+    const { from } = useParams();
+    const navigate = useNavigate();
+
+    const messages = {
+        'packages': 'Login in to access packages'
+    }
+
+    if (from === 'packages') {
+        message = messages.packages;
+    }
     
+    if (loggedInUser) {
+        if (from === 'packages') {
+            navigate('/packages');
+        }
+    }
 
     useEffect(() => {
         const messageTimer = setTimeout(() => {
@@ -31,6 +44,7 @@ const LoginSignUp = ({ menuToggle, setLoggedInUser }: LoginSignUpProps) => {
       return () => clearTimeout(messageTimer);
 
     }, [errorText])
+
     
     
 
@@ -53,7 +67,6 @@ const LoginSignUp = ({ menuToggle, setLoggedInUser }: LoginSignUpProps) => {
         }
     }
 
-    
     return (
         <div className="app__loginSignUp login-only">
             {showMessage &&

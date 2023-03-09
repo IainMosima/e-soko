@@ -4,7 +4,6 @@ import { loginCredentials } from "../../models/loginCredentials";
 import { useForm } from "react-hook-form";
 import { UnauthorizedError } from "../../errors/http_errors";
 import { login } from "../../network/users";
-import { useNavigate } from "react-router-dom";
 
 
 
@@ -24,8 +23,6 @@ interface LoginProps {
 
 const LoginForm = ({  setErrorText,  setLoggedInUser } : LoginProps) => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<loginCredentials>();
-    const navigate = useNavigate();
-
 
     const registerOptions = {
         usernameEmail: { required: 'Name or UserName is required' },
@@ -38,7 +35,6 @@ const LoginForm = ({  setErrorText,  setLoggedInUser } : LoginProps) => {
 
             if (user) {
                 setLoggedInUser(user);
-                navigate('/');
             }
 
         } catch (err) {

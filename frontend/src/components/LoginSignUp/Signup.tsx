@@ -8,7 +8,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { User } from "../../models/user";
-import { useNavigate } from "react-router-dom";
+
 
 interface SignUpFormProps {
     setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>,
@@ -37,7 +37,6 @@ const SignUpForm = ({ setLoggedInUser }: SignUpFormProps) => {
 
     const { register, handleSubmit, formState: { isSubmitting }} = useForm();
 
-    const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<FieldValues> = async (credentials: FieldValues) => {
         const formData = new FormData();
@@ -54,7 +53,6 @@ const SignUpForm = ({ setLoggedInUser }: SignUpFormProps) => {
 
             if (user){
                 setLoggedInUser(user);
-                navigate('/');
             }
             
         } catch (error) {
